@@ -19,7 +19,6 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "user_info", catalog = "yuema")
 public class UserInfo implements java.io.Serializable {
 
-	// Fields
 
 	private Integer id;
 	private String username;
@@ -32,7 +31,7 @@ public class UserInfo implements java.io.Serializable {
 	private String introduce;
 	private String photo;
 	private Short isFrost;
-	private Integer createTime;
+	private String createTime;
 	private Set<FocusRelation> focusRelationsForMyId = new HashSet<FocusRelation>(
 			0);
 	private Set<ChatInfo> chatInfos = new HashSet<ChatInfo>(0);
@@ -49,7 +48,7 @@ public class UserInfo implements java.io.Serializable {
 
 	/** minimal constructor */
 	public UserInfo(String username, String password, String nickname,
-			Short isFrost, Integer createTime) {
+			Short isFrost, String createTime) {
 		this.username = username;
 		this.password = password;
 		this.nickname = nickname;
@@ -60,12 +59,12 @@ public class UserInfo implements java.io.Serializable {
 	/** full constructor */
 	public UserInfo(String username, String password, String nickname,
 			String realName, Short sex, String birthday, String state,
-			String introduce, String photo, Short isFrost, Integer createTime,
+			String introduce, String photo, Short isFrost, String createTime,
 			Set<FocusRelation> focusRelationsForMyId, Set<ChatInfo> chatInfos,
 			Set<ChatHistory> chatHistories,
 			Set<FocusRelation> focusRelationsForFocusId,
 			Set<ChatMember> chatMembers) {
-		this.username = username;
+		this.username = username;  
 		this.password = password;
 		this.nickname = nickname;
 		this.realName = realName;
@@ -186,12 +185,12 @@ public class UserInfo implements java.io.Serializable {
 		this.isFrost = isFrost;
 	}
 
-	@Column(name = "create_time", nullable = false)
-	public Integer getCreateTime() {
+	@Column(name = "create_time", nullable = false, length = 12)
+	public String getCreateTime() {
 		return this.createTime;
 	}
 
-	public void setCreateTime(Integer createTime) {
+	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
 	}
 
