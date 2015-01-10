@@ -23,7 +23,7 @@ public class ChatHistory implements java.io.Serializable {
 	private UserInfo userInfo;
 	private ChatInfo chatInfo;
 	private String content;
-	private Integer chatTime;
+	private String chatTime;
 
 	// Constructors
 
@@ -33,7 +33,7 @@ public class ChatHistory implements java.io.Serializable {
 
 	/** full constructor */
 	public ChatHistory(UserInfo userInfo, ChatInfo chatInfo, String content,
-			Integer chatTime) {
+			String chatTime) {
 		this.userInfo = userInfo;
 		this.chatInfo = chatInfo;
 		this.content = content;
@@ -82,12 +82,12 @@ public class ChatHistory implements java.io.Serializable {
 		this.content = content;
 	}
 
-	@Column(name = "chat_time", nullable = false)
-	public Integer getChatTime() {
+	@Column(name = "chat_time", nullable = false, length = 12)
+	public String getChatTime() {
 		return this.chatTime;
 	}
 
-	public void setChatTime(Integer chatTime) {
+	public void setChatTime(String chatTime) {
 		this.chatTime = chatTime;
 	}
 

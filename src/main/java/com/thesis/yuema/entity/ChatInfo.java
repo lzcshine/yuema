@@ -26,8 +26,8 @@ public class ChatInfo implements java.io.Serializable {
 	private Integer chatId;
 	private UserInfo userInfo;
 	private String title;
-	private Integer createTime;
-	private Integer limitTime;
+	private String createTime;
+	private String limitTime;
 	private Short isResponse;
 	private Set<ChatHistory> chatHistories = new HashSet<ChatHistory>(0);
 	private Set<ChatMember> chatMembers = new HashSet<ChatMember>(0);
@@ -39,8 +39,8 @@ public class ChatInfo implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public ChatInfo(UserInfo userInfo, String title, Integer createTime,
-			Integer limitTime, Short isResponse) {
+	public ChatInfo(UserInfo userInfo, String title, String createTime,
+			String limitTime, Short isResponse) {
 		this.userInfo = userInfo;
 		this.title = title;
 		this.createTime = createTime;
@@ -49,9 +49,9 @@ public class ChatInfo implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public ChatInfo(UserInfo userInfo, String title, Integer createTime,
-			Integer limitTime, Short isResponse,
-			Set<ChatHistory> chatHistories, Set<ChatMember> chatMembers) {
+	public ChatInfo(UserInfo userInfo, String title, String createTime,
+			String limitTime, Short isResponse, Set<ChatHistory> chatHistories,
+			Set<ChatMember> chatMembers) {
 		this.userInfo = userInfo;
 		this.title = title;
 		this.createTime = createTime;
@@ -93,21 +93,21 @@ public class ChatInfo implements java.io.Serializable {
 		this.title = title;
 	}
 
-	@Column(name = "create_time", nullable = false)
-	public Integer getCreateTime() {
+	@Column(name = "create_time", nullable = false, length = 12)
+	public String getCreateTime() {
 		return this.createTime;
 	}
 
-	public void setCreateTime(Integer createTime) {
+	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
 	}
 
-	@Column(name = "limit_time", nullable = false)
-	public Integer getLimitTime() {
+	@Column(name = "limit_time", nullable = false, length = 12)
+	public String getLimitTime() {
 		return this.limitTime;
 	}
 
-	public void setLimitTime(Integer limitTime) {
+	public void setLimitTime(String limitTime) {
 		this.limitTime = limitTime;
 	}
 

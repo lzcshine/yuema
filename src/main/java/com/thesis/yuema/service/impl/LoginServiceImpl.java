@@ -8,6 +8,7 @@ import com.thesis.yuema.dao.UserInfoDao;
 import com.thesis.yuema.entity.UserInfo;
 import com.thesis.yuema.service.LoginService;
 
+
 /**
  * @author:lzc
  * 2015-1-9 下午9:14:38
@@ -23,8 +24,8 @@ public class LoginServiceImpl implements LoginService{
 		UserInfo user = new UserInfo();
 		user.setUsername(username);
 		user.setPassword(password);
-		user.setNickname(nickname);
-		user.setCreateTime((int)System.currentTimeMillis() / 1000);
+		user.setNickname(nickname); 
+		user.setCreateTime(String.valueOf(System.currentTimeMillis() / 1000));
 		user.setIsFrost((short)0);
 		return userInfoDao.addNewUser(user);
 	}
