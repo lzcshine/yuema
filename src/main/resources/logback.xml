@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds">
+
+	<property resource="yuema.properties" />
+
+	<!-- Handle JUL -->
+	<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+		<resetJUL>true</resetJUL>
+	</contextListener>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%date [%thread] [%file:%line] [%level %logger{0}] - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ACCESS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logs.dir}/container-access.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logs.dir}/container-access.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>60</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<charset>UTF-8</charset> 
+			<pattern>combined</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logs.dir}/yuema.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logs.dir}/yuema.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>60</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<charset>UTF-8</charset> 
+			<pattern>%date [%thread] [%file:%line] [%level %logger{0}] - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="java.sql" level="WARN" />
+	<logger name="com.mchange" level="WARN" />
+	<logger name="org.apache" level="WARN" />
+<!-- 	<logger name="org.mybatis" level="DEBUG" /> -->
+	<logger name="org.springframework" level="INFO" />
+
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE" />
+	</root>
+</configuration>
+

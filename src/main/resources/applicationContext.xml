@@ -14,18 +14,20 @@
 	<!-- 加载配置文件设置静态的参数 -->
 	<context:property-placeholder location="classpath:database.properties" ignore-unresolvable="true"/>
 	<!-- 扫描项目下所有spring的组件，即@Service，@Repository等注解 -->
-	<context:component-scan base-package="com.thesis.yuema" />
+	<context:component-scan base-package="com.thesis.yuema">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
 	<!-- 启动对@AspectJ注解的支持 -->
 	<aop:config />
 	
 	<!-- 数据库的连接池，通过C3P0去操作 -->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-		<property name="driverClass" value="${DRIVER_CLASS}"/>
-		<property name="jdbcUrl" value="${URL}"/>
+		<property name="driverClass" value="com.mysql.jdbc.Driver"/>
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/yuema"/>
 		<!--当用户调用getConnection()时使root用户成为去获取连接的用户。主要用于连接池连接非c3p0 的数据源时。Default:null-->
-        <property name="overrideDefaultUser" value="${USERNAME}"/>
+        <property name="overrideDefaultUser" value="lzc"/>
         <!-- 与overrideDefaultUser参数对应使用的一个参数。Default: null-->
-        <property name="overrideDefaultPassword" value="${PASSWORD}"/>
+        <property name="overrideDefaultPassword" value="123"/>
 		<property name="initialPoolSize" value="10"/>
 		<!--连接池中保留的最小连接数。--> 
 		<property name="minPoolSize" value="10"/>

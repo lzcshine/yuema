@@ -7,6 +7,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>yuema</name>
 	<url>http://maven.apache.org</url>
+
 	<repositories>
 		<repository>
 			<id>springsource-repo</id>
@@ -14,36 +15,91 @@
 			<url>http://repo.springsource.org/release</url>
 		</repository>
 	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
+			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
 
-		<!-- spring依赖的jar包 -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${servlet-api_ver}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Spring framework -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${springframework_ver}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${springframework_ver}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>${springframework_ver}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${springframework_ver}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${spring-version}</version>
+			<version>${springframework_ver}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${springframework_ver}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-			<version>${spring-version}</version>
+			<version>${springframework_ver}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${springframework_ver}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${springframework_ver}</version>
 		</dependency>
 		<!-- spring集合hibernate依赖的jar包 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>${spring-version}</version>
+			<version>${springframework_ver}</version>
 		</dependency>
-		<!-- spring mvc依赖的jar包 -->
 		<dependency>
-			<groupId>org.springframework.webflow</groupId>
-			<artifactId>spring-webflow</artifactId>
-			<version>${spring-webflow-version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${springframework_ver}</version>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- spring security依赖的jar包 -->
@@ -82,9 +138,24 @@
 
 		<!-- apache公用的jar包 -->
 		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.6</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons_lang3_ver}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>${commons_collections_ver}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons_io_ver}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>${commons_codec_ver}</version>
 		</dependency>
 
 		<!-- mysql依赖的jar包 -->
@@ -100,43 +171,100 @@
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.9.12</version>
 		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-asl</artifactId>
+			<version>1.9.12</version>
+		</dependency>
 
 		<!-- log4j依赖的jar包 -->
+		<!-- <dependency> <groupId>log4j</groupId> <artifactId>log4j</artifactId> 
+			<version>1.2.17</version> </dependency> -->
+
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+
+		<!-- Logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j_ver}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback_ver}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-access</artifactId>
+			<version>${logback_ver}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>${logback_ver}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.5</version>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${slf4j_ver}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jul-to-slf4j</artifactId>
+			<version>${slf4j_ver}</version>
 		</dependency>
 
-
 	</dependencies>
+
 	<build>
 		<finalName>yuema</finalName>
 		<plugins>
-			<!-- tomcat7的插件 -->
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.1</version>
 				<configuration>
-					<url>http://localhost:8080/manager/text</url>
-					<server>tomcat</server>
+					<path>/</path>
+					<port>80</port>
+					<uriEncoding>UTF-8</uriEncoding>
+					<java.util.logging.manager>org.apache.juli.ClassLoaderLogManager</java.util.logging.manager>
 				</configuration>
 			</plugin>
 		</plugins>
-		<!-- <outputDirectory>target/classes</outputDirectory> <testOutputDirectory>target/test-classes</testOutputDirectory> -->
+		<!-- <plugins> tomcat7的插件 <plugin> <groupId>org.apache.tomcat.maven</groupId> 
+			<artifactId>tomcat7-maven-plugin</artifactId> <version>2.1</version> <configuration> 
+			<url>http://localhost:8080/manager/text</url> <server>tomcat</server> </configuration> 
+			</plugin> </plugins> -->
+		<!-- <resources> <resource> <directory>yuema/src/main/resources</directory> 
+			<filtering>true</filtering> </resource> </resources> -->
 	</build>
 
+	<profiles>
+		<profile>
+			<id>local</id>
+			<build>
+				<filters>
+					<filter>src/main/resources/database.properties</filter>
+				</filters>
+			</build>
+		</profile>
+	</profiles>
+
 	<properties>
-		<spring-version>3.2.3.RELEASE</spring-version>
+		<springframework_ver>3.2.5.RELEASE</springframework_ver>
 		<spring-security-version>3.1.4.RELEASE</spring-security-version>
-		<spring-webflow-version>2.3.2.RELEASE</spring-webflow-version>
-		<struts-version>2.3.15.1</struts-version>
 		<hibernate-version>4.2.3.Final</hibernate-version>
+		<commons_codec_ver>1.8</commons_codec_ver>
+		<commons_lang3_ver>3.1</commons_lang3_ver>
+		<commons_collections_ver>3.2.1</commons_collections_ver>
+		<commons_io_ver>2.4</commons_io_ver>
+		<slf4j_ver>1.7.5</slf4j_ver>
+		<logback_ver>1.0.13</logback_ver>
+		<servlet-api_ver>3.1.0</servlet-api_ver>
 	</properties>
 </project>
