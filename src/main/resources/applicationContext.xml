@@ -72,4 +72,16 @@
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" propagation="REQUIRED" rollback-for="Exception" />
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- 启动对@AspectJ注解的支持 -->
+	<aop:config>
+		<aop:pointcut expression="execution(* com.thesis.yuema.service.impl.*.*(..))" id="executeServices"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="executeServices" />
+	</aop:config>
 </beans>
