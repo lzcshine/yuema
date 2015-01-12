@@ -1,6 +1,7 @@
 package com.thesis.yuema.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.thesis.yuema.entity.ChatInfo;
 
@@ -15,5 +16,8 @@ public interface ChatInfoDao {
 	
 	ChatInfo getChatInfoByChatId(int chatId);
 	
-	List<ChatInfo> getChatInfosBySponsorId(int sponsorId);
+	List<Map<String,Object>> getChatInfosBySponsorId(int sponsorId);
+	
+	boolean updateIsResponseByChatId(ChatInfo chat);
+	
 }

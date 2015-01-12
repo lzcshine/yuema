@@ -32,4 +32,43 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo> implements
 		return user;
 	}
 
+	@Override
+	public UserInfo getUserInfoByUserId(int userId) {
+		String hql = "from UserInfo where id=?";
+		UserInfo user = null;
+		try{
+			user = (UserInfo) this.getSession().createQuery(hql)
+					.setParameter(0, userId).uniqueResult();
+		}catch(Exception e){
+			
+		}
+		return user;
+	}
+
+	@Override
+	public UserInfo getUserInfoByNickname(String nickname) {
+		String hql = "from UserInfo where nickname=?";
+		UserInfo user = null;
+		try{
+			user = (UserInfo) this.getSession().createQuery(hql)
+					.setParameter(0, nickname).uniqueResult();
+		}catch(Exception e){
+			
+		}
+		return user;
+	}
+
+	@Override
+	public UserInfo getUserInfoByUsername(String username) {
+		String hql = "from UserInfo where username=?";
+		UserInfo user = null;
+		try{
+			user = (UserInfo) this.getSession().createQuery(hql)
+					.setParameter(0, username).uniqueResult();
+		}catch(Exception e){
+			
+		}
+		return user;
+	}
+
 }

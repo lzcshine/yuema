@@ -11,5 +11,11 @@ public interface UserInfoDao {
 
 	boolean addNewUser(UserInfo user);
 	
+	UserInfo getUserInfoByUserId(int userId);
+	
 	UserInfo searchUser(String username, String password);
+	
+	UserInfo getUserInfoByNickname(String nickname);
+	
+	UserInfo getUserInfoByUsername(String username);
 }

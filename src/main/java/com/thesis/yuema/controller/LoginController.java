@@ -33,11 +33,37 @@ public class LoginController {
 	
 	@RequestMapping(value="/register")
 	public void registerUser(HttpServletResponse response, String username, String password, String nickname){
-		UserInfo user = loginServiceImpl.searchUser(username, password);
-		if (user != null){
+		if (loginServiceImpl.addNewUser(username, password, nickname)){
+			ResponseUtil.sendBack(response, "true");
+		}
+		else{
 			ResponseUtil.sendBack(response, "false");
 		}
-		if (loginServiceImpl.addNewUser(username, password, nickname)){
+	}
+	
+	@RequestMapping(value="/usernameUsable")
+	public void usernameUsable(HttpServletResponse response, String username){
+		if (loginServiceImpl.searchUserByUsername(username) == null){
+			ResponseUtil.sendBack(response, "true");
+		}
+		else{
+			ResponseUtil.sendBack(response, "false");
+		}
+	}
+	
+	@RequestMapping(value="/nicknameUsable")
+	public void nicknameUsable(HttpServletResponse response, String nickname){
+		if (loginServiceImpl.searchUserByNickname(nickname) == null){
+			ResponseUtil.sendBack(response, "true");
+		}
+		else{
+			ResponseUtil.sendBack(response, "false");
+		}
+	}
+	
+	@RequestMapping(value="/addImei")
+	public void addImei(HttpServletResponse response, int userId, String imei){
+		if (loginServiceImpl.addImeiInfo(userId, imei)){
 			ResponseUtil.sendBack(response, "true");
 		}
 		else{
