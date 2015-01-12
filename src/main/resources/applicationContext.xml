@@ -11,8 +11,6 @@
        http://www.springframework.org/schema/tx
        http://www.springframework.org/schema/tx/spring-tx-3.2.xsd"
 	default-lazy-init="false">
-	<!-- 加载配置文件设置静态的参数 -->
-	<context:property-placeholder location="classpath:database.properties" ignore-unresolvable="true"/>
 	<!-- 扫描项目下所有spring的组件，即@Service，@Repository等注解 -->
 	<context:component-scan base-package="com.thesis.yuema">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
@@ -44,7 +42,7 @@
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<!-- <property name="entityInterceptor" ref="entityInterceptor" /> -->
-		<!-- <property name="namingStrategy" ref="databaseNamingStrategy" /> -->
+		<property name="namingStrategy" ref="databaseNamingStrategy" />
 		<property name="hibernateProperties">
 			<value>
 				hibernate.dialect = org.hibernate.dialect.MySQLDialect
@@ -62,16 +60,19 @@
 	</bean>
 	
 	<!-- hibernate将变量名与数据库表中的属性相对应起来的工具 -->
-	<!-- <bean id="databaseNamingStrategy" class="org.javatribe.vTouching.common.DatabaseNamingStrategy">
-		<property name="tablePrefix" value="tb_" />
+	<bean id="databaseNamingStrategy" class="com.thesis.yuema.common.DatabaseNamingStrategy">
 		<property name="isAddUnderscores" value="true" />
 		<property name="maxLength" value="128" />
-    </bean> -->
+    </bean>
     
     <!-- 将hibernate的事务管理托管给spring -->
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<!-- spring获取实体的工具 -->
+	<bean id="springEntityUtil" class="com.thesis.yuema.util.SpringEntityUtil"
+		lazy-init="false" />
 	
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>

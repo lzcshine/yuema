@@ -25,6 +25,7 @@ public class LoginServiceImpl implements LoginService{
 		user.setUsername(username);
 		user.setPassword(password);
 		user.setNickname(nickname); 
+		System.out.println("++++++++");
 		user.setCreateTime(String.valueOf(System.currentTimeMillis() / 1000));
 		user.setIsFrost((short)0);
 		return userInfoDao.addNewUser(user);

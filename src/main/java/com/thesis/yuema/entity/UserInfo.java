@@ -19,6 +19,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "user_info", catalog = "yuema")
 public class UserInfo implements java.io.Serializable {
 
+	// Fields
 
 	private Integer id;
 	private String username;
@@ -34,6 +35,8 @@ public class UserInfo implements java.io.Serializable {
 	private String createTime;
 	private Set<FocusRelation> focusRelationsForMyId = new HashSet<FocusRelation>(
 			0);
+	private Set<FeedbackInfo> feedbackInfos = new HashSet<FeedbackInfo>(0);
+	private Set<ImeiInfo> imeiInfos = new HashSet<ImeiInfo>(0);
 	private Set<ChatInfo> chatInfos = new HashSet<ChatInfo>(0);
 	private Set<ChatHistory> chatHistories = new HashSet<ChatHistory>(0);
 	private Set<FocusRelation> focusRelationsForFocusId = new HashSet<FocusRelation>(
@@ -60,11 +63,12 @@ public class UserInfo implements java.io.Serializable {
 	public UserInfo(String username, String password, String nickname,
 			String realName, Short sex, String birthday, String state,
 			String introduce, String photo, Short isFrost, String createTime,
-			Set<FocusRelation> focusRelationsForMyId, Set<ChatInfo> chatInfos,
-			Set<ChatHistory> chatHistories,
+			Set<FocusRelation> focusRelationsForMyId,
+			Set<FeedbackInfo> feedbackInfos, Set<ImeiInfo> imeiInfos,
+			Set<ChatInfo> chatInfos, Set<ChatHistory> chatHistories,
 			Set<FocusRelation> focusRelationsForFocusId,
 			Set<ChatMember> chatMembers) {
-		this.username = username;  
+		this.username = username;
 		this.password = password;
 		this.nickname = nickname;
 		this.realName = realName;
@@ -76,6 +80,8 @@ public class UserInfo implements java.io.Serializable {
 		this.isFrost = isFrost;
 		this.createTime = createTime;
 		this.focusRelationsForMyId = focusRelationsForMyId;
+		this.feedbackInfos = feedbackInfos;
+		this.imeiInfos = imeiInfos;
 		this.chatInfos = chatInfos;
 		this.chatHistories = chatHistories;
 		this.focusRelationsForFocusId = focusRelationsForFocusId;
@@ -202,6 +208,24 @@ public class UserInfo implements java.io.Serializable {
 	public void setFocusRelationsForMyId(
 			Set<FocusRelation> focusRelationsForMyId) {
 		this.focusRelationsForMyId = focusRelationsForMyId;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userInfo")
+	public Set<FeedbackInfo> getFeedbackInfos() {
+		return this.feedbackInfos;
+	}
+
+	public void setFeedbackInfos(Set<FeedbackInfo> feedbackInfos) {
+		this.feedbackInfos = feedbackInfos;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userInfo")
+	public Set<ImeiInfo> getImeiInfos() {
+		return this.imeiInfos;
+	}
+
+	public void setImeiInfos(Set<ImeiInfo> imeiInfos) {
+		this.imeiInfos = imeiInfos;
 	}
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userInfo")

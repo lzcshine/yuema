@@ -33,11 +33,15 @@ public class LoginController {
 	
 	@RequestMapping(value="/register")
 	public void registerUser(HttpServletResponse response, String username, String password, String nickname){
+		UserInfo user = loginServiceImpl.searchUser(username, password);
+		if (user != null){
+			ResponseUtil.sendBack(response, "false");
+		}
 		if (loginServiceImpl.addNewUser(username, password, nickname)){
-			ResponseUtil.sendBack(response, "success to add user");
+			ResponseUtil.sendBack(response, "true");
 		}
 		else{
-			ResponseUtil.sendBack(response, "fail to add user");
+			ResponseUtil.sendBack(response, "false");
 		}
 	}
 }
