@@ -1,5 +1,8 @@
 package com.thesis.yuema.service;
 
+import java.util.List;
+import java.util.Map;
+
 import com.thesis.yuema.entity.UserInfo;
 
 /**
@@ -33,4 +36,9 @@ public interface LoginService {
 	 * 查找用户昵称是否存在
 	 */
 	UserInfo searchUserByNickname(String nickname);
+	
+	/**
+	 * 获取用户信息
+	 */
+	Map<String,Object> getUserInfoByUsername(String username);
 }

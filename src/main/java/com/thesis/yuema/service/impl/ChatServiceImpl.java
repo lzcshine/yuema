@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.thesis.yuema.dao.ChatHistoryDao;
 import com.thesis.yuema.dao.ChatInfoDao;
 import com.thesis.yuema.dao.ChatMemberDao;
 import com.thesis.yuema.dao.UserInfoDao;
@@ -31,6 +32,9 @@ public class ChatServiceImpl implements ChatService {
 	
 	@Resource(name="userInfoDaoImpl")
 	UserInfoDao userInfoDao;
+	
+	@Resource(name="chatHistoryDaoImpl")
+	ChatHistoryDao chatHistoryDao;
 	
 	/* 
 	 * 创建活动（聊天室初始状态）
@@ -128,8 +132,12 @@ public class ChatServiceImpl implements ChatService {
 
 	@Override
 	public List<Map<String, Object>> getChatInfosByUserId(int userId) {
-		// TODO Auto-generated method stub
-		return null;
+		return chatMemberDao.getChatInfosByUserId(userId);
+	}
+
+	@Override
+	public List<Map<String, Object>> getChatHistoriesByChatId(int chatId) {
+		return chatHistoryDao.getChatHistories(chatId);
 	}
 
 }

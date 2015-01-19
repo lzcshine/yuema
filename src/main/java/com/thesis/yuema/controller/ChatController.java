@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.thesis.yuema.service.ChatService;
 import com.thesis.yuema.util.JsonUtil;
+import com.thesis.yuema.util.ParamsUtil;
 import com.thesis.yuema.util.ResponseUtil;
 
 /**
@@ -40,7 +41,13 @@ public class ChatController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value="addChatMembers")
 	public void addChatMembers(HttpServletResponse response, int chatId, String userIdList){
+		if (!ParamsUtil.isValidParam(userIdList)){
+			ResponseUtil.sendBack(response, "request param is not valid");
+		}
 		List<Integer> list = JsonUtil.toObject(userIdList, List.class);
+		if (list == null){
+			ResponseUtil.sendBack(response, "request param is not valid");
+		}
 		if (chatServiceImpl.addChatMemberBatch(chatId, list)){
 			ResponseUtil.sendBack(response, JsonUtil.toJson(true));
 		}
@@ -57,5 +64,10 @@ public class ChatController {
 		else{
 			ResponseUtil.sendBack(response, JsonUtil.toJson(false));
 		}
+	}
+	
+	@RequestMapping(value="getChatHistories")
+	public void getChatHistoriesByChatId(HttpServletResponse response, int chatId){
+		ResponseUtil.sendBack(response, JsonUtil.toJson(chatServiceImpl.getChatHistoriesByChatId(chatId)));
 	}
 }

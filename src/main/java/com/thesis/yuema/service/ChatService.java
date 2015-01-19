@@ -3,8 +3,6 @@ package com.thesis.yuema.service;
 import java.util.List;
 import java.util.Map;
 
-import com.thesis.yuema.entity.ChatMember;
-
 /**
  * @author:lzc
  * 2015-1-12 下午3:37:41
@@ -46,4 +44,9 @@ public interface ChatService {
 	 * 获取聊天室成员信息
 	 */
 	List<Map<String,Object>> getChatMembersInfo(int chatId);
+	
+	/**
+	 * 获取聊天记录
+	 */
+	List<Map<String,Object>> getChatHistoriesByChatId(int chatId);
 }

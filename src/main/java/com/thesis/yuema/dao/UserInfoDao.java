@@ -1,5 +1,8 @@
 package com.thesis.yuema.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import com.thesis.yuema.entity.UserInfo;
 
 /**
@@ -18,4 +21,6 @@ public interface UserInfoDao {
 	UserInfo getUserInfoByNickname(String nickname);
 	
 	UserInfo getUserInfoByUsername(String username);
+	
+	Map<String,Object> getUserInfoMapByUsername(String username);
 }

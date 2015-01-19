@@ -14,5 +14,5 @@ public interface ChatHistoryDao {
 
 	boolean addChatHistory(ChatHistory bean);
 	
-	List<Map<String,Object>> getChatHistories(int chatId, int count);
+	List<Map<String,Object>> getChatHistories(int chatId);
 }

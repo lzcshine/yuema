@@ -39,6 +39,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 		bean.setFeedback(feedback);
 		bean.setUserInfo(userInfo);
 		bean.setFeedbackTime(String.valueOf(System.currentTimeMillis() / 1000));
+		bean.setIsReply((short)0);
 		return feedbackDao.addFeedbackInfo(bean);
 	}
 

@@ -29,7 +29,7 @@ public class FeedbackDaoImpl extends BaseDaoImpl<FeedbackInfo> implements Feedba
 		hql.append(" fb.feedback as feedback, ");
 		hql.append(" fb.replyFeedback as reply, ");
 		hql.append(" fb.replyTime as replyTime ");
-		hql.append(") from FeedbackInfo fb where ch.userInfo.id=? order by ch.replyTime desc");
+		hql.append(") from FeedbackInfo fb where fb.userInfo.id=? order by fb.replyTime desc");
 		if (count == 0){
 			count = 3;
 		}

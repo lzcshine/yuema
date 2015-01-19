@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import com.thesis.yuema.common.Const;
 import com.thesis.yuema.dao.ChatMemberDao;
 import com.thesis.yuema.entity.ChatMember;
 
@@ -50,13 +51,13 @@ public class ChatMemberDaoImpl extends BaseDaoImpl<ChatMember> implements ChatMe
 		hql.append(" select new map( ");
 		hql.append(" cm.chatInfo.id as chatId, ");
 		hql.append(" cm.chatInfo.title as title, ");
-		hql.append(" cm.chatInfo.userInfo.id as sponsorId ");
+		hql.append(" cm.chatInfo.userInfo.id as sponsorId, ");
+		hql.append(" cm.chatInfo.userInfo.nickname as sponsorNickname, ");
 		hql.append(" cm.chatInfo.createTime as createTime ");
-		hql.append(") from ChatMember cm where cm.userInfo.id = ? order by cm.chatInfo.createTime desc");
+		hql.append(") from ChatMember cm where cm.userInfo.id = ? and cm.isSponsor = 0 order by cm.chatInfo.createTime desc");
 		List<Map<String,Object>> list = null;
 		try {
-			list = this.getSession().createQuery(hql.toString())
-					.setParameter(0, userId).list();
+			list = (List<Map<String, Object>>) this.executeQuery(hql.toString(), Const.EVENT_COUNT, userId);
 		} catch (Exception e) {
 		}
 		return list;

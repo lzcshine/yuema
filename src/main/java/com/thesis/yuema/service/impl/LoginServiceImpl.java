@@ -1,5 +1,8 @@
 package com.thesis.yuema.service.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -77,5 +80,10 @@ public class LoginServiceImpl implements LoginService{
 	@Override
 	public UserInfo searchUserByNickname(String nickname) {
 		return userInfoDao.getUserInfoByNickname(nickname);
+	}
+
+	@Override
+	public Map<String, Object> getUserInfoByUsername(String username) {
+		return userInfoDao.getUserInfoMapByUsername(username);
 	}
 }

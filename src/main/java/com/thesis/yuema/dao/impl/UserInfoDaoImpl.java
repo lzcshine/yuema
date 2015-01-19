@@ -1,7 +1,11 @@
 package com.thesis.yuema.dao.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Repository;
 
+import com.thesis.yuema.common.Const;
 import com.thesis.yuema.dao.UserInfoDao;
 import com.thesis.yuema.entity.UserInfo;
 import com.thesis.yuema.dao.impl.BaseDaoImpl;
@@ -69,6 +73,24 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo> implements
 			
 		}
 		return user;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Map<String, Object> getUserInfoMapByUsername(String username) {
+		StringBuilder hql = new StringBuilder();
+		hql.append(" select new map( ");
+		hql.append(" u.id as userId, ");
+		hql.append(" u.username as username, ");
+		hql.append(" u.nickname as nickname, ");
+		hql.append(" u.photo as photo ");
+		hql.append(") from UserInfo u where u.username=?");
+		Map<String,Object> map = null;
+		try {
+			map =  (Map<String, Object>) this.getSession().createQuery(hql.toString()).setParameter(0, username).uniqueResult();
+		} catch (Exception e) {
+		}
+		return map;
 	}
 
 }
