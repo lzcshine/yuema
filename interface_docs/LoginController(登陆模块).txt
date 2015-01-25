@@ -1,0 +1,63 @@
+备注：请求均使用post提交方式
+
+1.用户登录：
+userToLogin(/login)
+path：http://localhost/login
+入参：	username,	//用户名
+	password	//密码
+返回：true时：
+	{
+	"username":"lzc",
+	"nickname":"shine",
+	"userId":1,
+	"introduce":"xxxx",
+	"isFrost":0,
+	"photo":null
+	} 
+或false
+
+2.用户注册：
+registerUser(/register)
+path：http://localhost/register
+入参：	username,	//用户名
+	password,	//密码
+	nickname	//用户昵称
+返回：true时：
+	{"username":"zeng",
+	"photo":null,
+	"nickname":"min",
+	"userId":5
+	} 
+或false
+
+3.判断用户名是否可用：
+usernameUsable(/usernameUsable)
+path：http://localhost/usernameUsable
+入参：	username,	//用户名
+返回：true或false
+
+4.判断昵称是否可用：
+nicknameUsable(/nicknameUsable)
+path：http://localhost/nicknameUsable
+入参：	nickname,	//昵称
+返回：true或false
+
+5.添加用户imei值：
+addImei(/addImei)
+path：http://localhost/addImei
+入参：	userId,		//用户id
+	imei		//手机imei值
+返回：true或false
+
+5.根据用户名获取用户信息：
+getUserInfoMapByUsername(/getUserInfoMapByUsername)
+path：http://localhost/getUserInfoMapByUsername
+入参：	username,	//用户名
+返回：  {
+	"username":"lzc",
+	"nickname":"shine",
+	"userId":1,
+	"photo":null
+	} 
+	或 null
+

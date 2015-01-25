@@ -1,0 +1,44 @@
+备注：请求均使用post提交方式
+
+1.获取用户正邀请中的活动列表：
+getInvitingEventsList(/getInvitingEventsList)
+path：http://localhost/getInvitingEventsList
+入参：	userId,		//用户id
+返回：[{
+	"limitTime":"30",			//活动倒计时时间
+	"createTime":"1421050178",		//活动创建时间
+	"title":"play",				//活动介绍
+	"chatId":1				//活动（聊天室）id
+	},
+	{"limitTime":"1800",
+	"createTime":"1421050388",
+	"title":"去唱k吧",
+	"chatId":2
+	}
+	......
+] 
+
+1.获取用户有关活动列表：
+getEventsList(/getEventsList)
+path：http://localhost/getEventsList
+入参：	userId,		//用户id
+返回：[
+	{"createTime":"1421050178",		//活动创建时间
+	"sponsorId":1,				//发布活动者id
+	"title":"play",				//活动介绍
+	"sponsorNickname":"shine",		//发布活动中昵称
+	"chatId":1				//活动（聊天室）id
+	}
+	......
+] 
+
+3.发布活动并邀请他人：
+addEvent(/addEvent)
+path：http://localhost/addEvent
+入参：	nickname,	//用户昵称
+	title,		//发起活动介绍
+	time，		//活动倒计时时间
+	inviteNickname	//邀请人的昵称，用Json转化list为string对象传输
+返回：true或false
+
+

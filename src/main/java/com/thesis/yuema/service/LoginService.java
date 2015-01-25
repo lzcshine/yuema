@@ -38,7 +38,7 @@ public interface LoginService {
 	UserInfo searchUserByNickname(String nickname);
 	
 	/**
-	 * 获取用户信息
+	 * 根据用户名返回用户信息
 	 */
 	Map<String,Object> getUserInfoByUsername(String username);
 }

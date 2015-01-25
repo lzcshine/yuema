@@ -13,7 +13,7 @@ public interface ChatService {
 	/**
 	 *创建活动（聊天室初始状态）
 	 */
-	boolean addChatInfo(int userId, String title, String time);
+	boolean addChatInfo(String nickname, String title, String time);
 	
 	/**
 	 * 添加用户至聊天室
@@ -49,4 +49,9 @@ public interface ChatService {
 	 * 获取聊天记录
 	 */
 	List<Map<String,Object>> getChatHistoriesByChatId(int chatId);
+	
+	/**
+	 * 发送活动邀请给用户
+	 */
+	void pushEventInviteToUsers(String nickname, String title, String time, String inviteNames);
 }

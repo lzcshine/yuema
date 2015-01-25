@@ -1,0 +1,27 @@
+备注：请求均使用post提交方式
+
+1.关注用户：
+addFocusRelation(/addFocus)
+path：http://localhost/addFocus
+入参：	userId,		//用户id
+	focusId		//关注用户id
+返回：true或false
+
+2.获取关注用户列表：
+getFocusListByUserId(/getFocusListByUserId)
+path：http://localhost/getFocusListByUserId
+入参：	userId,		//用户id
+返回：[
+	{
+	"focusPhoto":null,		//关注用户的头像图片
+	"focusNickname":"xiang",	//关注用户的昵称
+	"focusUsername":"xiao"		//关注用户的用户名
+	},
+	{"focusPhoto":null,
+	"focusNickname":"zhang",
+	"focusUsername":"quan"
+	}
+	......
+] 
+
+

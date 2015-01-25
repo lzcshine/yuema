@@ -1,0 +1,46 @@
+备注：请求均使用post提交方式
+
+1.获取聊天室成员：
+getChatMembersByChatId(/getChatMembers)
+path：http://localhost/getChatMembers
+入参：	chatId,		//聊天室id
+返回：[{
+	"photo":null,			//用户头像url
+	"nickname":"shine",		//用户昵称
+	"userId":1			//用户id
+	},
+	{"photo":null,
+	"nickname":"zhang",
+	"userId":2
+	}
+	...
+] 
+
+2.聊天室建立：
+updateChatInfoIsResponse(/addChatFlag)
+path：http://localhost/addChatFlag
+入参：	chatId,		//聊天室id
+返回：true或false
+
+3.添加聊天室成员(批量添加)：
+addChatMembers(/addChatMembers)
+path：http://localhost/addChatMembers
+入参：	chatId,		//聊天室id
+	userIdList	//用户id,用Json转化list<Integer>为string对象传输
+返回：true或false
+
+4.添加聊天室成员：
+addChatMember(/addChatMember)
+path：http://localhost/addChatMember
+入参：	chatId,		//聊天室id
+	userId		//用户id
+返回：true或false
+
+5.获取聊天记录：
+getChatHistories(/getChatHistories)
+path：http://localhost/getChatHistories
+入参：	chatId,		//聊天室id
+	count		//获取条数，不传情况默认获取10条
+返回：待添加
+
+

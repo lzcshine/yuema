@@ -24,9 +24,9 @@ public class EventController {
 	ChatService chatServiceImpl;
 
 	@RequestMapping(value="/addEvent")
-	public void addEvent(HttpServletResponse response, int userId, String title, String time, String nickname, String inviteNickname){
-		//TODO send message to inviteNickname
-		if (chatServiceImpl.addChatInfo(userId, title, time)){
+	public void addEvent(HttpServletResponse response, String title, String time, String nickname, String inviteNickname){
+		if (chatServiceImpl.addChatInfo(nickname, title, time)){
+			chatServiceImpl.pushEventInviteToUsers(nickname, title, time, inviteNickname);
 			ResponseUtil.sendBack(response, JsonUtil.toJson(true));
 		}
 		else{
@@ -41,7 +41,6 @@ public class EventController {
 	
 	@RequestMapping(value="/getInvitingEventsList")
 	public void getInvitingEventsList(HttpServletResponse response, int userId){
-		List<Map<String,Object>> list = chatServiceImpl.getInvitingChatInfosByUserId(userId);
-		ResponseUtil.sendBack(response, JsonUtil.toJson(list));
+		ResponseUtil.sendBack(response, JsonUtil.toJson(chatServiceImpl.getInvitingChatInfosByUserId(userId)));
 	}
 }

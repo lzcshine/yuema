@@ -1,6 +1,7 @@
 package com.thesis.yuema.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.thesis.yuema.common.Const;
 import com.thesis.yuema.dao.ChatHistoryDao;
 import com.thesis.yuema.dao.ChatInfoDao;
 import com.thesis.yuema.dao.ChatMemberDao;
@@ -16,6 +18,8 @@ import com.thesis.yuema.entity.ChatInfo;
 import com.thesis.yuema.entity.ChatMember;
 import com.thesis.yuema.entity.UserInfo;
 import com.thesis.yuema.service.ChatService;
+import com.thesis.yuema.util.JPushUtil;
+import com.thesis.yuema.util.JsonUtil;
 
 /**
  * @author:lzc
@@ -40,9 +44,9 @@ public class ChatServiceImpl implements ChatService {
 	 * 创建活动（聊天室初始状态）
 	 */
 	@Override
-	public boolean addChatInfo(int userId, String title, String time) {
+	public boolean addChatInfo(String nickname, String title, String time) {
 		ChatInfo chatInfo = new ChatInfo();
-		UserInfo userInfo = userInfoDao.getUserInfoByUserId(userId);
+		UserInfo userInfo = userInfoDao.getUserInfoByNickname(nickname);
 		if (userInfo == null){
 			return false;
 		}
@@ -138,6 +142,31 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public List<Map<String, Object>> getChatHistoriesByChatId(int chatId) {
 		return chatHistoryDao.getChatHistories(chatId);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void pushEventInviteToUsers(String nickname, String title, String time,
+			String inviteNames) {
+		List<String> list = JsonUtil.toObject(inviteNames, List.class);
+		if (list == null){
+			return;
+		}
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("nickname", nickname);
+		map.put("title", title);
+		map.put(Const.EVENT_LIMIT_TIME, time);
+		map.put(Const.NOTIFICATION_SEND_TIME, System.currentTimeMillis() / 1000);
+		for (String name : list){
+//			if(!JPushUtil.pushEventInviteToUser(name, map)){
+//				for (int i=0; i<2; i++){
+//					if(JPushUtil.pushEventInviteToUser(name, map)){
+//						break;
+//					}
+//				}
+//			}
+			JPushUtil.pushEventInviteToUser(name, map);
+		}
 	}
 
 }

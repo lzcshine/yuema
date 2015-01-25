@@ -23,7 +23,7 @@ public class LoginController {
 
 	@Resource(name = "loginServiceImpl")
 	LoginService loginServiceImpl;
-
+	
 	@RequestMapping(value = "/login")
 	public void userToLogin(HttpServletResponse response, String username,
 			String password) {
@@ -37,6 +37,8 @@ public class LoginController {
 			map.put("username", username);
 			map.put("nickname", user.getNickname());
 			map.put("photo", user.getPhoto());
+			map.put("isFrost", user.getIsFrost());
+			map.put("introduce", user.getIntroduce());
 			ResponseUtil.sendBack(response, JsonUtil.toJson(map));
 		} else {
 			ResponseUtil.sendBack(response, JsonUtil.toJson(false));
@@ -91,6 +93,14 @@ public class LoginController {
 		} else {
 			ResponseUtil.sendBack(response, JsonUtil.toJson(false));
 		}
+	}
+	@RequestMapping(value = "/getUserInfoMapByUsername")
+	public void getUserInfoMapByUsername(HttpServletResponse response, String username){
+		if (!ParamsUtil.isValidParam(username)){
+			ResponseUtil.sendBack(response, "request param is not valid");
+		}
+		ResponseUtil.sendBack(response, JsonUtil.toJson(loginServiceImpl
+				.getUserInfoByUsername(username)));
 	}
 
 }
