@@ -1,8 +1,5 @@
 package com.thesis.yuema.controller;
 
-import java.util.List;
-import java.util.Map;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
@@ -26,7 +23,7 @@ public class EventController {
 	@RequestMapping(value="/addEvent")
 	public void addEvent(HttpServletResponse response, String title, String time, String nickname, String inviteNickname){
 		if (chatServiceImpl.addChatInfo(nickname, title, time)){
-			chatServiceImpl.pushEventInviteToUsers(nickname, title, time, inviteNickname);
+			new Thread(new PushMessageThread(nickname,title,time,inviteNickname)).start();
 			ResponseUtil.sendBack(response, JsonUtil.toJson(true));
 		}
 		else{
@@ -36,11 +33,33 @@ public class EventController {
 	
 	@RequestMapping(value="/getEventsList")
 	public void getEventsList(HttpServletResponse response, int userId){
-		ResponseUtil.sendBack(response, JsonUtil.toJson(chatServiceImpl.getChatInfosByUserId(userId)));
+		//ResponseUtil.sendBack(response, JsonUtil.toJson(chatServiceImpl.getChatInfosByUserId(userId)));
+		ResponseUtil.sendBack(response, JsonUtil.toJson(chatServiceImpl.getUsernamesByChatId(userId)));
 	}
 	
 	@RequestMapping(value="/getInvitingEventsList")
 	public void getInvitingEventsList(HttpServletResponse response, int userId){
 		ResponseUtil.sendBack(response, JsonUtil.toJson(chatServiceImpl.getInvitingChatInfosByUserId(userId)));
+	}
+	
+	private class PushMessageThread implements Runnable{
+		
+		private String nickname;
+		private String title;
+		private String time;
+		private String inviteNickname;
+		
+		public PushMessageThread(String nickname, String title, String time, String inviteNickname){
+			this.nickname = nickname;
+			this.title = title;
+			this.time = time;
+			this.inviteNickname = inviteNickname;
+		}
+
+		@Override
+		public void run() {
+			chatServiceImpl.pushEventInviteToUsers(nickname, title, time, inviteNickname);
+		}
+		
 	}
 }

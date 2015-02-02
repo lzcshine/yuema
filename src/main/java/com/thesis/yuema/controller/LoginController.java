@@ -94,6 +94,7 @@ public class LoginController {
 			ResponseUtil.sendBack(response, JsonUtil.toJson(false));
 		}
 	}
+	
 	@RequestMapping(value = "/getUserInfoMapByUsername")
 	public void getUserInfoMapByUsername(HttpServletResponse response, String username){
 		if (!ParamsUtil.isValidParam(username)){

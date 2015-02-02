@@ -34,4 +34,9 @@ public class FocusController {
 	public void getFocusListByUserId(HttpServletResponse response, int userId){
 		ResponseUtil.sendBack(response, JsonUtil.toJson(userServiceImpl.getFocusListByUserId(userId)));
 	}
+	
+	@RequestMapping(value="/cancelFocus")
+	public void cancelFocus(HttpServletResponse response, int userId, String focus){
+		ResponseUtil.sendBack(response, JsonUtil.toJson(userServiceImpl.deleteFocus(userId, focus)));
+	}
 }

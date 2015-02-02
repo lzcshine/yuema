@@ -63,4 +63,21 @@ public class ChatMemberDaoImpl extends BaseDaoImpl<ChatMember> implements ChatMe
 		return list;
 	}
 
+	@Override
+	public List<String> getUsernamesByChatId(int chatId) {
+		String hql = "select cm.userInfo.username as username from ChatMember cm where cm.id=?";
+		List<String> list = this.getSession().createQuery(hql).setParameter(0, chatId).list();
+		return list;
+	}
+
+	@Override
+	public boolean deleteChatMember(int chatId, String username) {
+		String hql = "from ChatMember cm where cm.chatInfo.id=? and cm.userInfo.username=?";
+		ChatMember bean = (ChatMember) this.getSession().createQuery(hql).setParameter(0, chatId).setParameter(1, username).uniqueResult();
+		if (bean == null){
+			return false;
+		}
+		return this.delete(bean);
+	}
+
 }

@@ -38,4 +38,14 @@ public class FocusRelationDaoImpl extends BaseDaoImpl<FocusRelation> implements
 		return list;
 	}
 
+	@Override
+	public boolean deleteFocusRelation(int userId, String focusUsername) {
+		String hql = "from FocusRelation fr where fr.userInfoByMyId.id=? and fr.userInfoByFocusId.username=?";
+		FocusRelation bean = (FocusRelation) this.getSession().createQuery(hql).setParameter(0, userId).setParameter(1, focusUsername).uniqueResult();
+		if (bean == null){
+			return false;
+		}
+		return this.delete(bean);
+	}
+
 }

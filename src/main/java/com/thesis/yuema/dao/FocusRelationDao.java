@@ -15,4 +15,6 @@ public interface FocusRelationDao {
 	boolean addFocusRelation(FocusRelation bean);
 	
 	List<Map<String,Object>> getFocusListByUserId(int userId);
+	
+	boolean deleteFocusRelation(int userId, String focusUsername);
 }

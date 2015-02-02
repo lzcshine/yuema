@@ -10,7 +10,23 @@ import java.util.Map;
 
 public interface UserService {
 
+	/**
+	 * 关注用户
+	 */
 	boolean addUserFocus(int userId, int focusId);
 	
+	/**
+	 * 获取关注用户列表
+	 */
 	List<Map<String,Object>> getFocusListByUserId(int userId);
+	
+	/**
+	 * 取消关注
+	 */
+	boolean deleteFocus(int userId, String focusUsername);
+	
+	/**
+	 * 查找用户
+	 */
+	List<Map<String,Object>> getSearchUsers(String text);
 }

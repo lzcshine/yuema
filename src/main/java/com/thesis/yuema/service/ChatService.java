@@ -1,5 +1,6 @@
 package com.thesis.yuema.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -54,4 +55,19 @@ public interface ChatService {
 	 * 发送活动邀请给用户
 	 */
 	void pushEventInviteToUsers(String nickname, String title, String time, String inviteNames);
+	
+	/**
+	 * 根据聊天室id获取成员用户名
+	 */
+	List<String> getUsernamesByChatId(int chatId);
+	
+	/**
+	 * 群主删除聊天室
+	 */
+	boolean deleteChatMsg(int chatId);
+	
+	/**
+	 * 用户退出聊天室
+	 */
+	boolean deleteUserChannel(int chatId, String username, String nickname) throws IOException;
 }

@@ -3,14 +3,14 @@
 1.提交反馈信息：
 addFeedbackInfo(/addFeedback)
 path：http://localhost/addFeedbackInfo
-入参：	userId,		//用户id
+入参：userId,		//用户id
 	feedback	//反馈内容
 返回：true或false
 
 2.获取系统回复反馈信息：
 getFeedbackReply(/getFeedbackReply)
 path：http://localhost/getFeedbackReply
-入参：	userId,		//用户id
+入参：userId,		//用户id
 	count		//获取回复条数，默认传0
 返回：[
 	{"replyTime":"1421644055",	//回复时间

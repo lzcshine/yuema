@@ -1,0 +1,42 @@
+#socket服务端传递的json消息格式#
+{
+	"type":"init",			//消息类型
+}
+{
+	"type":"message",		//消息类型（message）
+	"chatId":1,				//聊天室id
+	"username":"xxx",		//用户名
+	"nickname":"xxx",		//用户昵称
+	"time":xxx,				//发送时间（long类型）
+	"content":"xxx"			//消息内容
+}
+#socket客户端传递的json消息格式#
+{
+	"type":"login",			//消息类型（login）,用户初始化所有聊天室的连接
+	"username":"xxx",		//用户名
+	"content":[1,2,3]		//聊天室id集合（List）
+}
+{
+	"type":"register",		//消息类型（register）,用户初始化新创建的聊天室连接
+	"username":"xxx",		//用户名
+	"content":1				//聊天室id
+}
+{
+	"type":"message",		//消息类型（message），用户发送聊天信息
+	"chatId":1,				//聊天室id
+	"username":"xxx",		//用户名
+	"nickname":"xxx",		//用户昵称
+	"time":xxx,				//发送时间（long类型）
+	"content":"xxx"			//消息内容
+}
+{
+	"type":"deleteChat",	//消息类型（deleteChat）,群主删除聊天室
+	"chatId":1,				//聊天室id
+	"nickname":"xxx"		//群主昵称
+	"title":"xxx",			//聊天室标题
+}
+{
+	"type":"deleteUser",	//消息类型（deleteUser）,用户退出聊天室
+	"chatId":1,				//聊天室id
+	"nickname":"xxx"		//用户昵称
+}

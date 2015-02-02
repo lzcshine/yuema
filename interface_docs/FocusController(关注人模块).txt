@@ -3,14 +3,14 @@
 1.关注用户：
 addFocusRelation(/addFocus)
 path：http://localhost/addFocus
-入参：	userId,		//用户id
+入参：userId,		//用户id
 	focusId		//关注用户id
 返回：true或false
 
 2.获取关注用户列表：
 getFocusListByUserId(/getFocusListByUserId)
 path：http://localhost/getFocusListByUserId
-入参：	userId,		//用户id
+入参：userId,		//用户id
 返回：[
 	{
 	"focusPhoto":null,		//关注用户的头像图片
@@ -24,4 +24,9 @@ path：http://localhost/getFocusListByUserId
 	......
 ] 
 
-
+1.关注用户：
+cancelFocus(/cancelFocus)
+path：http://localhost/cancelFocus
+入参：userId,		//用户id
+	focus		//关注用户名
+返回：true或false

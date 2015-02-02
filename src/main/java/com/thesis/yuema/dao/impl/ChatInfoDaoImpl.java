@@ -23,17 +23,22 @@ public class ChatInfoDaoImpl extends BaseDaoImpl<ChatInfo> implements
 		return this.save(chat);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public ChatInfo getChatInfoByChatId(int chatId) {
-		String hql = "from ChatInfo where id=?";
-		ChatInfo chatInfo = null;
+	public Map<String,Object> getChatInfoByChatId(int chatId) {
+		StringBuilder hql = new StringBuilder();
+		hql.append(" select new map( ");
+		hql.append(" ci.userInfo.nickname as nickname, ");
+		hql.append(" ci.title as title ");
+		hql.append(") from ChatInfo ci where is_response=1 ");
+		hql.append(" and ci.id = ? ");
+		Map<String,Object> map = null;
 		try {
-			chatInfo = (ChatInfo) this.getSession().createQuery(hql)
-					.setParameter(0, chatId).uniqueResult();
-
+			map = (Map<String, Object>) this.getSession().createQuery(hql.toString())
+					.setParameter(0, chatId);
 		} catch (Exception e) {
 		}
-		return chatInfo;
+		return map;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -59,6 +64,22 @@ public class ChatInfoDaoImpl extends BaseDaoImpl<ChatInfo> implements
 	@Override
 	public boolean updateIsResponseByChatId(ChatInfo chat) {
 		return this.update(chat);
+	}
+
+	@Override
+	public boolean deleteChatInfo(int chatId) {
+		ChatInfo chat = getChatInfoById(chatId);
+		if (chat == null){
+			return false;
+		}
+		return this.delete(chat);
+	}
+
+	@Override
+	public ChatInfo getChatInfoById(int chatId) {
+		String hql = "from ChatInfo where id=?";
+		ChatInfo chatInfo = (ChatInfo) this.getSession().createQuery(hql).setParameter(0, chatId).uniqueResult();
+		return chatInfo;
 	}
 
 }

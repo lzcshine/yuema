@@ -14,7 +14,11 @@ public interface ChatInfoDao {
 
 	boolean addChatInfo(ChatInfo chat);
 	
-	ChatInfo getChatInfoByChatId(int chatId);
+	boolean deleteChatInfo(int chatId);
+	
+	ChatInfo getChatInfoById(int chatId);
+	
+	Map<String,Object> getChatInfoByChatId(int chatId);
 	
 	List<Map<String,Object>> getChatInfosBySponsorId(int sponsorId);
 	

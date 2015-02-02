@@ -13,6 +13,11 @@
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
+  
+  <listener>
+  	<listener-class>com.thesis.yuema.common.ChatRoomServerListener</listener-class>
+  </listener>
+  
   <filter>
     <filter-name>encodingFilter</filter-name>
     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -56,6 +61,7 @@
     <servlet-name>spring-mvc</servlet-name>
     <url-pattern>/*</url-pattern>
   </servlet-mapping>
+  
   <!-- <filter>
     <filter-name>springSecurityFilterChain</filter-name>
     <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>

@@ -93,4 +93,25 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo> implements
 		return map;
 	}
 
+	@Override
+	public List<Map<String, Object>> getSearchUsers(String text) {
+		StringBuilder hql = new StringBuilder();
+		hql.append(" select new map( ");
+		hql.append(" u.id as userId, ");
+		hql.append(" u.username as username, ");
+		hql.append(" u.nickname as nickname, ");
+		hql.append(" u.photo as photo ");
+		hql.append(") from UserInfo u where u.username like '%");
+		hql.append(text);
+		hql.append("%' or u.nickname like '%");
+		hql.append(text);
+		hql.append("%'");
+		List<Map<String,Object>> list = null;
+		try {
+			list = this.getSession().createQuery(hql.toString()).list();
+		} catch (Exception e) {
+		}
+		return list;
+	}
+
 }

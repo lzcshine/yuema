@@ -1,5 +1,6 @@
 package com.thesis.yuema.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -8,6 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.thesis.yuema.dao.ChatInfoDao;
+import com.thesis.yuema.dao.ChatMemberDao;
+import com.thesis.yuema.entity.ChatInfo;
 import com.thesis.yuema.service.ChatService;
 import com.thesis.yuema.util.JsonUtil;
 import com.thesis.yuema.util.ParamsUtil;
@@ -22,6 +26,12 @@ public class ChatController {
 
 	@Resource(name="chatServiceImpl")
 	ChatService chatServiceImpl;
+	
+	@Resource(name="chatInfoDaoImpl")
+	ChatInfoDao chatInfoDao;
+	
+	@Resource(name="chatMemberDaoImpl")
+	ChatMemberDao chatMemberDao;
 	
 	@RequestMapping(value="addChatFlag")
 	public void updateChatInfoIsResponse(HttpServletResponse response, int chatId){
@@ -69,5 +79,20 @@ public class ChatController {
 	@RequestMapping(value="getChatHistories")
 	public void getChatHistoriesByChatId(HttpServletResponse response, int chatId){
 		ResponseUtil.sendBack(response, JsonUtil.toJson(chatServiceImpl.getChatHistoriesByChatId(chatId)));
+	}
+	
+	@RequestMapping(value="deleteChatMsg")
+	public void deleteChatMsg(HttpServletResponse response, int chatId) throws IOException{
+		ResponseUtil.sendBack(response, JsonUtil.toJson(chatServiceImpl.deleteChatMsg(chatId)));
+	}
+	
+	@RequestMapping(value="deleteUserChannel")
+	public void deleteUserChannel(HttpServletResponse response, int chatId, String username, String nickname) throws IOException{
+		ResponseUtil.sendBack(response, JsonUtil.toJson(chatServiceImpl.deleteUserChannel(chatId, username, nickname)));
+	}
+	
+	@RequestMapping(value="test")
+	public void test(HttpServletResponse response, int chatId, String username) throws IOException{
+		ResponseUtil.sendBack(response, JsonUtil.toJson(chatMemberDao.deleteChatMember(chatId, username)));
 	}
 }

@@ -16,7 +16,11 @@ public interface ChatMemberDao {
 	
 	boolean addChatMemberBatch(List<ChatMember> list);
 	
+	boolean deleteChatMember(int chatId, String username);
+	
 	List<Map<String,Object>> getChatMembersInfo(int chatId);
 	
 	List<Map<String,Object>> getChatInfosByUserId(int userId);
+	
+	List<String> getUsernamesByChatId(int chatId);
 }

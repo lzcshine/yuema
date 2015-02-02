@@ -1,5 +1,6 @@
 package com.thesis.yuema.service.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +10,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.thesis.yuema.chatserver.ChatRoomServer;
 import com.thesis.yuema.common.Const;
 import com.thesis.yuema.dao.ChatHistoryDao;
 import com.thesis.yuema.dao.ChatInfoDao;
@@ -72,7 +74,7 @@ public class ChatServiceImpl implements ChatService {
 	 */
 	@Override
 	public boolean updateChatInfoIsResponse(int chatId) {
-		ChatInfo chatInfo = chatInfoDao.getChatInfoByChatId(chatId);
+		ChatInfo chatInfo = chatInfoDao.getChatInfoById(chatId);
 		if (chatInfo == null){
 			return false;
 		}
@@ -94,7 +96,7 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public boolean addChatMember(int chatId, int userId) {
 		ChatMember bean = new ChatMember();
-		ChatInfo chatInfo = chatInfoDao.getChatInfoByChatId(chatId);
+		ChatInfo chatInfo = chatInfoDao.getChatInfoById(chatId);
 		if (chatInfo == null){
 			return false;
 		}
@@ -113,7 +115,7 @@ public class ChatServiceImpl implements ChatService {
 	 */
 	@Override
 	public boolean addChatMemberBatch(int chatId, List<Integer> userIdList) {
-		ChatInfo chatInfo = chatInfoDao.getChatInfoByChatId(chatId);
+		ChatInfo chatInfo = chatInfoDao.getChatInfoById(chatId);
 		if (chatInfo == null){
 			return false;
 		}
@@ -167,6 +169,57 @@ public class ChatServiceImpl implements ChatService {
 //			}
 			JPushUtil.pushEventInviteToUser(name, map);
 		}
+	}
+
+	@Override
+	public List<String> getUsernamesByChatId(int chatId) {
+		return chatMemberDao.getUsernamesByChatId(chatId);
+	}
+
+	@Override
+	public boolean deleteChatMsg(int chatId) {
+		Map<String,Object> map = chatInfoDao.getChatInfoByChatId(chatId);
+		if (map == null || map.size() == 0){
+			return false;
+		}
+		List<String> users = getUsernamesByChatId(chatId);
+		map.put("chatId", chatId);
+		if (chatInfoDao.deleteChatInfo(chatId)){
+			try {
+				ChatRoomServer.getInstance().deleteChatMsg(users, map);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean deleteUserChannel(int chatId, String username, String nickname) throws IOException {
+		List<String> users = getUsernamesByChatId(chatId);
+		Map<String,Object> map = new HashMap<String, Object>();
+		if (users != null){
+			try {
+				users.remove(username);
+			} catch (Exception e) {
+				if (chatMemberDao.deleteChatMember(chatId, username)){
+					ChatRoomServer.getInstance().deleteUserChannel(users, map);
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+			if (chatMemberDao.deleteChatMember(chatId, username)){
+				ChatRoomServer.getInstance().deleteUserChannel(users, map);
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		return false;
 	}
 
 }

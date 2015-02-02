@@ -23,4 +23,6 @@ public interface UserInfoDao {
 	UserInfo getUserInfoByUsername(String username);
 	
 	Map<String,Object> getUserInfoMapByUsername(String username);
+	
+	List<Map<String,Object>> getSearchUsers(String text);
 }

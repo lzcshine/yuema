@@ -47,4 +47,14 @@ public class UserServiceImpl implements UserService {
 		return focusRelationDao.getFocusListByUserId(userId);
 	}
 
+	@Override
+	public boolean deleteFocus(int userId, String focusUsername) {
+		return focusRelationDao.deleteFocusRelation(userId, focusUsername);
+	}
+
+	@Override
+	public List<Map<String, Object>> getSearchUsers(String text) {
+		return userInfoDao.getSearchUsers(text);
+	}
+
 }

@@ -54,6 +54,21 @@ public class JPushUtil {
 		}
 		return false;
 	}
+	
+	/**
+	 * 发送系统通知给指定用户
+	 */
+	public static boolean pushCustomMessageToOne(String alias, Map<String, Object> map) {
+		try {
+			MessageResult result = jpush.sendCustomMessageWithAlias(RandomUtils.getRandomSendNo(), alias, "消息", "", null, map);
+			if (result.getResponse_status() == 200) {
+				return true;
+			}
+		} catch (Exception e) {
+			return false;
+		}
+		return false;
+	}
 
 	/**
 	 * 发送活动邀请指定用户

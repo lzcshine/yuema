@@ -1,0 +1,15 @@
+备注：请求均使用post提交方式
+
+1.查找用户：
+getSearchUsers(/searchUsers)
+path：http://localhost/searchUsers
+入参：text,		//查找目标字符串
+返回：  {
+	"username":"lzc",
+	"nickname":"shine",
+	"userId":1,
+	"photo":null
+	} 
+	...
+
+
