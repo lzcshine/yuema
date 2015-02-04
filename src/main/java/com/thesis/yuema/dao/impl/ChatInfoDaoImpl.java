@@ -52,7 +52,7 @@ public class ChatInfoDaoImpl extends BaseDaoImpl<ChatInfo> implements
 		hql.append(" ci.userInfo.nickname as sponsorNickname, ");
 		hql.append(" ci.limitTime as limitTime ");
 		hql.append(") from ChatInfo ci where is_response=0 ");
-		hql.append(" and ci.userInfo.id = ? ");
+		hql.append(" and ci.userInfo.id = ? order by ci.createTime desc");
 		List<Map<String,Object>> list = null;
 		try {
 			list = this.getSession().createQuery(hql.toString())
