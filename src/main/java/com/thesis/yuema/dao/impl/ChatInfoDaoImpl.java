@@ -6,6 +6,7 @@ import java.util.Map;
 import org.jboss.logging.Logger;
 import org.springframework.stereotype.Repository;
 
+import com.thesis.yuema.common.Const;
 import com.thesis.yuema.dao.ChatInfoDao;
 import com.thesis.yuema.entity.ChatInfo;
 
@@ -55,8 +56,7 @@ public class ChatInfoDaoImpl extends BaseDaoImpl<ChatInfo> implements
 		hql.append(" and ci.userInfo.id = ? order by ci.createTime desc");
 		List<Map<String,Object>> list = null;
 		try {
-			list = this.getSession().createQuery(hql.toString())
-					.setParameter(0, sponsorId).list();
+			list = (List<Map<String, Object>>) this.executeQuery(hql.toString(), Const.EVENT_INVITING_COUNT, sponsorId);
 		} catch (Exception e) {
 		}
 		return list;
@@ -81,6 +81,26 @@ public class ChatInfoDaoImpl extends BaseDaoImpl<ChatInfo> implements
 		String hql = "from ChatInfo where id=?";
 		ChatInfo chatInfo = (ChatInfo) this.getSession().createQuery(hql).setParameter(0, chatId).uniqueResult();
 		return chatInfo;
+	}
+
+	@Override
+	public List<Map<String, Object>> getChatInfosLimitBySponsorId(
+			int sponsorId, int start) {
+		StringBuilder hql = new StringBuilder();
+		hql.append(" select new map( ");
+		hql.append(" ci.id as chatId, ");
+		hql.append(" ci.title as title, ");
+		hql.append(" ci.createTime as createTime, ");
+		hql.append(" ci.userInfo.nickname as sponsorNickname, ");
+		hql.append(" ci.limitTime as limitTime ");
+		hql.append(") from ChatInfo ci where is_response=0 ");
+		hql.append(" and ci.id > ? and ci.userInfo.id = ? order by ci.createTime desc");
+		List<Map<String,Object>> list = null;
+		try {
+			list = (List<Map<String, Object>>) this.executeQuery(hql.toString(), Const.EVENT_INVITING_COUNT, start,sponsorId);
+		} catch (Exception e) {
+		}
+		return list;
 	}
 
 }

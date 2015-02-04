@@ -34,12 +34,21 @@ public class EventController {
 	@RequestMapping(value="/getEventsList")
 	public void getEventsList(HttpServletResponse response, int userId){
 		ResponseUtil.sendBack(response, JsonUtil.toJson(chatServiceImpl.getChatInfosByUserId(userId)));
-		//ResponseUtil.sendBack(response, JsonUtil.toJson(chatServiceImpl.getUsernamesByChatId(userId)));
+	}
+	
+	@RequestMapping(value="/getScrollEventsList")
+	public void getScrollEventsList(HttpServletResponse response, int userId, int start){
+		ResponseUtil.sendBack(response, JsonUtil.toJson(chatServiceImpl.getScrollChatInfosByUserId(userId, start)));
 	}
 	
 	@RequestMapping(value="/getInvitingEventsList")
 	public void getInvitingEventsList(HttpServletResponse response, int userId){
 		ResponseUtil.sendBack(response, JsonUtil.toJson(chatServiceImpl.getInvitingChatInfosByUserId(userId)));
+	}
+	
+	@RequestMapping(value="/getScrollInvitingEventsList")
+	public void getScrollInvitingEventsList(HttpServletResponse response, int userId, int start){
+		ResponseUtil.sendBack(response, JsonUtil.toJson(chatServiceImpl.getScrollInvitingChatInfosByUserId(userId, start)));
 	}
 	
 	private class PushMessageThread implements Runnable{

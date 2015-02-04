@@ -24,4 +24,6 @@ public interface ChatInfoDao {
 	
 	boolean updateIsResponseByChatId(ChatInfo chat);
 	
+	List<Map<String,Object>> getChatInfosLimitBySponsorId(int sponsorId, int start);
+	
 }

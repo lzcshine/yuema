@@ -32,9 +32,19 @@ public interface ChatService {
 	List<Map<String,Object>> getInvitingChatInfosByUserId(int userId);
 	
 	/**
+	 * 加载用户正在邀请中的活动
+	 */
+	List<Map<String,Object>> getScrollInvitingChatInfosByUserId(int userId, int start);
+	
+	/**
 	 * 获取用户有关活动列表
 	 */
 	List<Map<String,Object>> getChatInfosByUserId(int userId);
+	
+	/**
+	 * 加载用户有关活动列表
+	 */
+	List<Map<String,Object>> getScrollChatInfosByUserId(int userId, int start);
 	
 	/**
 	 * 活动已有用户回应，修改活动中is_response标志量

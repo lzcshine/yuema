@@ -222,4 +222,16 @@ public class ChatServiceImpl implements ChatService {
 		return false;
 	}
 
+	@Override
+	public List<Map<String, Object>> getScrollInvitingChatInfosByUserId(
+			int userId, int start) {
+		return chatInfoDao.getChatInfosLimitBySponsorId(userId, start);
+	}
+
+	@Override
+	public List<Map<String, Object>> getScrollChatInfosByUserId(int userId,
+			int start) {
+		return chatMemberDao.getScrollChatInfosByUserId(userId, start);
+	}
+
 }

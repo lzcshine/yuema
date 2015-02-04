@@ -22,5 +22,7 @@ public interface ChatMemberDao {
 	
 	List<Map<String,Object>> getChatInfosByUserId(int userId);
 	
+	List<Map<String,Object>> getScrollChatInfosByUserId(int userId, int start);
+	
 	List<String> getUsernamesByChatId(int chatId);
 }
