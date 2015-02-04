@@ -60,7 +60,7 @@ public class EventController {
 		long limit = 0;
 		for (int i=0; i<list.size(); i++){
 			create = (long)list.get(i).get("createTime");
-			limit = (long)list.get(i).get("limtTime");
+			limit = (long)list.get(i).get("limitTime");
 			if (current - create > limit){
 				list.remove(i);
 			}
