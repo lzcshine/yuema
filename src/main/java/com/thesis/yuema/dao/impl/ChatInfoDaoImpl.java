@@ -49,6 +49,7 @@ public class ChatInfoDaoImpl extends BaseDaoImpl<ChatInfo> implements
 		hql.append(" ci.id as chatId, ");
 		hql.append(" ci.title as title, ");
 		hql.append(" ci.createTime as createTime, ");
+		hql.append(" ci.userInfo.nickname as sponsorNickname, ");
 		hql.append(" ci.limitTime as limitTime ");
 		hql.append(") from ChatInfo ci where is_response=0 ");
 		hql.append(" and ci.userInfo.id = ? ");
