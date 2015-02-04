@@ -12,14 +12,8 @@
 }
 #socket客户端传递的json消息格式#
 {
-	"type":"login",			//消息类型（login）,用户初始化所有聊天室的连接
-	"username":"xxx",		//用户名
-	"content":[1,2,3]		//聊天室id集合（List）
-}
-{
 	"type":"register",		//消息类型（register）,用户初始化新创建的聊天室连接
-	"username":"xxx",		//用户名
-	"content":1				//聊天室id
+	"username":"xxx",		//用户名 
 }
 {
 	"type":"message",		//消息类型（message），用户发送聊天信息

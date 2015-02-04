@@ -33,8 +33,8 @@ public class EventController {
 	
 	@RequestMapping(value="/getEventsList")
 	public void getEventsList(HttpServletResponse response, int userId){
-		//ResponseUtil.sendBack(response, JsonUtil.toJson(chatServiceImpl.getChatInfosByUserId(userId)));
-		ResponseUtil.sendBack(response, JsonUtil.toJson(chatServiceImpl.getUsernamesByChatId(userId)));
+		ResponseUtil.sendBack(response, JsonUtil.toJson(chatServiceImpl.getChatInfosByUserId(userId)));
+		//ResponseUtil.sendBack(response, JsonUtil.toJson(chatServiceImpl.getUsernamesByChatId(userId)));
 	}
 	
 	@RequestMapping(value="/getInvitingEventsList")
