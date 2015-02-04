@@ -7,8 +7,8 @@ package com.thesis.yuema.common;
 
 public class Const {
 
-	public static final int EVENT_COUNT = 10;
-	public static final int EVENT_INVITING_COUNT = 5;
+	public static final int EVENT_COUNT = 15;
+	public static final int EVENT_INVITING_COUNT = 15;
 	public static final int CHAT_HISTORIES_COUNT = 10;
 	public static final int REPLY_FEEDBACK_COUNT = 3;
 	

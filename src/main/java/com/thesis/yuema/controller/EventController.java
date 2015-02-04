@@ -1,5 +1,8 @@
 package com.thesis.yuema.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
@@ -43,12 +46,26 @@ public class EventController {
 	
 	@RequestMapping(value="/getInvitingEventsList")
 	public void getInvitingEventsList(HttpServletResponse response, int userId){
-		ResponseUtil.sendBack(response, JsonUtil.toJson(chatServiceImpl.getInvitingChatInfosByUserId(userId)));
+		handleInvitingEventsList(response,chatServiceImpl.getInvitingChatInfosByUserId(userId));
 	}
 	
 	@RequestMapping(value="/getScrollInvitingEventsList")
 	public void getScrollInvitingEventsList(HttpServletResponse response, int userId, int start){
-		ResponseUtil.sendBack(response, JsonUtil.toJson(chatServiceImpl.getScrollInvitingChatInfosByUserId(userId, start)));
+		handleInvitingEventsList(response,chatServiceImpl.getScrollInvitingChatInfosByUserId(userId, start));
+	}
+	
+	private void handleInvitingEventsList(HttpServletResponse response, List<Map<String,Object>> list){
+		long current = System.currentTimeMillis() / 1000;
+		long create = 0;
+		long limit = 0;
+		for (int i=0; i<list.size(); i++){
+			create = (long)list.get(i).get("createTime");
+			limit = (long)list.get(i).get("limtTime");
+			if (current - create > limit){
+				list.remove(i);
+			}
+		}
+		ResponseUtil.sendBack(response, JsonUtil.toJson(list));
 	}
 	
 	private class PushMessageThread implements Runnable{
