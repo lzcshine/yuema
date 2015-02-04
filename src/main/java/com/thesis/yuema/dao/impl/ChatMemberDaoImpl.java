@@ -90,7 +90,7 @@ public class ChatMemberDaoImpl extends BaseDaoImpl<ChatMember> implements ChatMe
 		hql.append(" cm.chatInfo.userInfo.id as sponsorId, ");
 		hql.append(" cm.chatInfo.userInfo.nickname as sponsorNickname, ");
 		hql.append(" cm.chatInfo.createTime as createTime ");
-		hql.append(") from ChatMember cm where cm.chatInfo.id > ? and cm.userInfo.id = ? order by cm.chatInfo.createTime desc");
+		hql.append(") from ChatMember cm where cm.chatInfo.id < ? and cm.userInfo.id = ? order by cm.chatInfo.createTime desc");
 		List<Map<String,Object>> list = null;
 		try {
 			list = (List<Map<String, Object>>) this.executeQuery(hql.toString(), Const.EVENT_COUNT, start, userId);
