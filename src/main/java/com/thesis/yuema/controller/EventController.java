@@ -24,9 +24,10 @@ public class EventController {
 	ChatService chatServiceImpl;
 
 	@RequestMapping(value="/addEvent")
-	public void addEvent(HttpServletResponse response, String title, String time, String nickname, String inviteNickname){
-		if (chatServiceImpl.addChatInfo(nickname, title, time)){
-			new Thread(new PushMessageThread(nickname,title,time,inviteNickname)).start();
+	public void addEvent(HttpServletResponse response, String title, String username, String time, String nickname, String inviteUsername){
+		String currentTime = String.valueOf(System.currentTimeMillis() / 1000);
+		if (chatServiceImpl.addChatInfo(username, title, time, currentTime)){
+			new Thread(new PushMessageThread(nickname,title,time,inviteUsername,currentTime,username)).start();
 			ResponseUtil.sendBack(response, JsonUtil.toJson(true));
 		}
 		else{
@@ -54,6 +55,11 @@ public class EventController {
 		handleInvitingEventsList(response,chatServiceImpl.getScrollInvitingChatInfosByUserId(userId, start));
 	}
 	
+	@RequestMapping(value="/createChatSuccess")
+	public void createChatRoomSuccess(HttpServletResponse response, int chatId, String username, String nickname){
+		ResponseUtil.sendBack(response, JsonUtil.toJson(chatServiceImpl.handleChatCreateSuccess(chatId, username, nickname)));
+	}
+	
 	private void handleInvitingEventsList(HttpServletResponse response, List<Map<String,Object>> list){
 		long current = System.currentTimeMillis() / 1000;
 		long create = 0;
@@ -63,6 +69,7 @@ public class EventController {
 			limit = Long.parseLong(list.get(i).get("limitTime").toString());
 			if (current - create > limit){
 				list.remove(i);
+//				chatServiceImpl.deleteChatInfo((Integer)list.get(i).get("chatId"));
 			}
 		}
 		ResponseUtil.sendBack(response, JsonUtil.toJson(list));
@@ -73,18 +80,22 @@ public class EventController {
 		private String nickname;
 		private String title;
 		private String time;
-		private String inviteNickname;
+		private String inviteUsername;
+		private String currentTime;
+		private String username;
 		
-		public PushMessageThread(String nickname, String title, String time, String inviteNickname){
+		public PushMessageThread(String nickname, String title, String time, String inviteUsername, String currentTime, String username){
 			this.nickname = nickname;
 			this.title = title;
 			this.time = time;
-			this.inviteNickname = inviteNickname;
+			this.inviteUsername = inviteUsername;
+			this.currentTime = currentTime;
+			this.username = username;
 		}
 
 		@Override
 		public void run() {
-			chatServiceImpl.pushEventInviteToUsers(nickname, title, time, inviteNickname);
+			chatServiceImpl.pushEventInviteToUsers(username,nickname, title, time, inviteUsername, currentTime);
 		}
 		
 	}

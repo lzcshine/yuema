@@ -18,6 +18,7 @@ public class Const {
 	public static final String NOTIFICATION_TYPE = "type";
 	public static final String NOTIFICATION_SYSTEM = "system";
 	public static final String NOTIFICATION_EVENT = "event";
+	public static final String NOTIFICATION_EVENT_SUCCESS = "yue";
 	public static final String NOTIFICATION_MESSAGE = "系统通知";
 	public static final String NOTIFICATION_EVENT_INVITE= "活动邀请";
 	public static final String NOTIFICATION_SEND_TIME = "sendTime";

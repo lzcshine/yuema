@@ -26,4 +26,6 @@ public interface ChatInfoDao {
 	
 	List<Map<String,Object>> getChatInfosLimitBySponsorId(int sponsorId, int start);
 	
+	ChatInfo getChatInfoByUsernameAndTime(String username, String createTime);
+	
 }

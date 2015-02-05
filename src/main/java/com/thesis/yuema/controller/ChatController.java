@@ -33,15 +33,15 @@ public class ChatController {
 	@Resource(name="chatMemberDaoImpl")
 	ChatMemberDao chatMemberDao;
 	
-	@RequestMapping(value="addChatFlag")
-	public void updateChatInfoIsResponse(HttpServletResponse response, int chatId){
-		if (chatServiceImpl.updateChatInfoIsResponse(chatId)){
-			ResponseUtil.sendBack(response, JsonUtil.toJson(true));
-		}
-		else{
-			ResponseUtil.sendBack(response, JsonUtil.toJson(false));
-		}
-	}
+//	@RequestMapping(value="addChatFlag")
+//	public void updateChatInfoIsResponse(HttpServletResponse response, int chatId){
+//		if (chatServiceImpl.updateChatInfoIsResponse(chatId)){
+//			ResponseUtil.sendBack(response, JsonUtil.toJson(true));
+//		}
+//		else{
+//			ResponseUtil.sendBack(response, JsonUtil.toJson(false));
+//		}
+//	}
 	
 	@RequestMapping(value="getChatMembers")
 	public void getChatMembersByChatId(HttpServletResponse response, int chatId){

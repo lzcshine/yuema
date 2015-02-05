@@ -46,16 +46,16 @@ public class ChatServiceImpl implements ChatService {
 	 * 创建活动（聊天室初始状态）
 	 */
 	@Override
-	public boolean addChatInfo(String nickname, String title, String time) {
+	public boolean addChatInfo(String username, String title, String time, String currentTime) {
 		ChatInfo chatInfo = new ChatInfo();
-		UserInfo userInfo = userInfoDao.getUserInfoByNickname(nickname);
+		UserInfo userInfo = userInfoDao.getUserInfoByUsername(username);
 		if (userInfo == null){
 			return false;
 		}
 		chatInfo.setUserInfo(userInfo);
 		chatInfo.setTitle(title);
 		chatInfo.setLimitTime(time);
-		chatInfo.setCreateTime(String.valueOf(System.currentTimeMillis() / 1000));
+		chatInfo.setCreateTime(currentTime);
 		chatInfo.setIsResponse((short)0);
 		
 		return chatInfoDao.addChatInfo(chatInfo);
@@ -73,11 +73,7 @@ public class ChatServiceImpl implements ChatService {
 	 * 活动已有用户回应，修改活动中is_response标志量
 	 */
 	@Override
-	public boolean updateChatInfoIsResponse(int chatId) {
-		ChatInfo chatInfo = chatInfoDao.getChatInfoById(chatId);
-		if (chatInfo == null){
-			return false;
-		}
+	public boolean updateChatInfoIsResponse(ChatInfo chatInfo) {
 		chatInfo.setIsResponse((short)1);
 		return chatInfoDao.updateIsResponseByChatId(chatInfo);
 	}
@@ -148,17 +144,24 @@ public class ChatServiceImpl implements ChatService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void pushEventInviteToUsers(String nickname, String title, String time,
-			String inviteNames) {
-		List<String> list = JsonUtil.toObject(inviteNames, List.class);
+	public void pushEventInviteToUsers(String username, String nickname, String title, String time,
+			String inviteUsername,String createTime) {
+		List<String> list = JsonUtil.toObject(inviteUsername, List.class);
 		if (list == null){
 			return;
 		}
+		ChatInfo chatInfo = chatInfoDao.getChatInfoByUsernameAndTime(username, createTime);
+		if (chatInfo == null){
+			return;
+		}
 		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("username", username);
+		map.put("chatId", chatInfo.getChatId());
 		map.put("nickname", nickname);
 		map.put("title", title);
 		map.put(Const.EVENT_LIMIT_TIME, time);
-		map.put(Const.NOTIFICATION_SEND_TIME, System.currentTimeMillis() / 1000);
+		Long currentTime = System.currentTimeMillis() / 1000;
+		map.put(Const.NOTIFICATION_SEND_TIME, String.valueOf(currentTime));
 		for (String name : list){
 //			if(!JPushUtil.pushEventInviteToUser(name, map)){
 //				for (int i=0; i<2; i++){
@@ -232,6 +235,75 @@ public class ChatServiceImpl implements ChatService {
 	public List<Map<String, Object>> getScrollChatInfosByUserId(int userId,
 			int start) {
 		return chatMemberDao.getScrollChatInfosByUserId(userId, start);
+	}
+
+	@Override
+	public boolean deleteChatInfo(int chatId) {
+		return chatInfoDao.deleteChatInfo(chatId);
+	}
+
+	@Override
+	public boolean deleteChatMember(int chatId, String username) {
+		return chatMemberDao.deleteChatMember(chatId, username);
+	}
+
+	@Override
+	public boolean handleChatCreateSuccess(int chatId, String username, String nickname) {
+		List<String> usernames = chatMemberDao.getUsernamesByChatId(chatId);
+		UserInfo userInfo = userInfoDao.getUserInfoByNickname(nickname);
+		if (userInfo == null){
+			return false;
+		}
+		ChatInfo chatInfo = chatInfoDao.getChatInfoById(chatId);
+		if (chatInfo == null){
+			return false;
+		}
+		if (usernames != null && usernames.size() > 0){
+			userInfo = userInfoDao.getUserInfoByNickname(nickname);
+			chatInfo = chatInfoDao.getChatInfoById(chatId);
+			if(!addChatMembers(userInfo,chatInfo)){
+				return false;
+			}
+			pushInviteSuccessToUser(username,chatId,chatInfo.getTitle());
+			return true;
+		}
+		UserInfo sponsor = userInfoDao.getUserInfoByUsername(username);
+		if(!addChatMembers(sponsor,userInfo,chatInfo)){
+			return false;
+		}
+		updateChatInfoIsResponse(chatInfo);
+		pushInviteSuccessToUser(username,chatId,chatInfo.getTitle());
+		return true;
+	}
+	
+	private boolean addChatMembers(UserInfo userInfo, ChatInfo chatInfo){
+		ChatMember bean = new ChatMember();
+		bean.setUserInfo(userInfo);
+		bean.setChatInfo(chatInfo);
+		bean.setIsSponsor((short)0);
+		return chatMemberDao.addChatMember(bean);
+	}
+	
+	private boolean addChatMembers(UserInfo sponsor, UserInfo inviter, ChatInfo chatInfo){
+		ChatMember bean1 = new ChatMember();
+		bean1.setUserInfo(sponsor);
+		bean1.setChatInfo(chatInfo);
+		bean1.setIsSponsor((short)1);
+		ChatMember bean2 = new ChatMember();
+		bean2.setUserInfo(inviter);
+		bean2.setChatInfo(chatInfo);
+		bean2.setIsSponsor((short)0);
+		List<ChatMember> list = new ArrayList<ChatMember>();
+		list.add(bean1);
+		list.add(bean2);
+		return chatMemberDao.addChatMemberBatch(list);
+	}
+	
+	private void pushInviteSuccessToUser(String username, int chatId, String title){
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("chatId", chatId);
+		map.put("title",title);
+		JPushUtil.pushInviteSuccessToUser(username, map);
 	}
 
 }

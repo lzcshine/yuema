@@ -35,10 +35,12 @@ path：http://localhost/getEventsList
 3.发布活动并邀请他人：
 addEvent(/addEvent)
 path：http://localhost/addEvent
-入参：nickname,	//用户昵称
+入参：
+	username,	//用户名
+	nickname,	//用户昵称
 	title,		//发起活动介绍
 	time，		//活动倒计时时间
-	inviteNickname	//邀请人的昵称，用Json转化list为string对象传输
+	inviteUsername	//邀请人的用户名，用Json转化list为string对象传输
 返回：true或false
 
 4.加载用户正邀请中的活动列表：
@@ -74,3 +76,11 @@ path：http://localhost/getScrollEventsList
 	}
 	......
 ]
+
+5.加载用户有关活动列表：
+createChatRoomSuccess(/createChatSuccess)
+path：http://localhost/createChatSuccess
+入参：chatId,		//聊天室id
+	username,	//发布者用户名
+	nickname	//用户昵称
+返回：true或false

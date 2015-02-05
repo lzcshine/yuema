@@ -103,4 +103,12 @@ public class ChatInfoDaoImpl extends BaseDaoImpl<ChatInfo> implements
 		return list;
 	}
 
+	@Override
+	public ChatInfo getChatInfoByUsernameAndTime(String username,
+			String createTime) {
+		String hql = "from ChatInfo c where c.userInfo.username=? and c.createTime=?";
+		ChatInfo chatInfo = (ChatInfo) this.getSession().createQuery(hql).setParameter(0, username).setParameter(1, createTime).uniqueResult();
+		return chatInfo;
+	}
+
 }

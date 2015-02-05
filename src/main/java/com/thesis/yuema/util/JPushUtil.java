@@ -88,4 +88,23 @@ public class JPushUtil {
 		}
 		return false;
 	}
+	
+	/**
+	 * 发送活动邀请指定用户
+	 */
+	public static boolean pushInviteSuccessToUser(String alias,
+			Map<String, Object> map) {
+		map.put(Const.NOTIFICATION_TYPE, Const.NOTIFICATION_EVENT_SUCCESS);
+		try {
+			MessageResult result = jpush.sendNotificationWithAlias(
+					RandomUtils.getRandomSendNo(), alias,
+					Const.NOTIFICATION_MESSAGE, "有人回应啦！", 0, map);
+			if (result.getResponse_status() == 200) {
+				return true;
+			}
+		} catch (Exception e) {
+			return false;
+		}
+		return false;
+	}
 }

@@ -7,7 +7,8 @@
 	"chatId":1,				//聊天室id
 	"username":"xxx",		//用户名
 	"nickname":"xxx",		//用户昵称
-	"time":xxx,				//发送时间（long类型）
+	"photo":"xxx",			//用户头像
+	"time":xxx,				//发送时间
 	"content":"xxx"			//消息内容
 }
 #socket客户端传递的json消息格式#
@@ -20,7 +21,8 @@
 	"chatId":1,				//聊天室id
 	"username":"xxx",		//用户名
 	"nickname":"xxx",		//用户昵称
-	"time":xxx,				//发送时间（long类型）
+	"photo":"xxx",			//用户头像
+	"time":xxx,				//发送时间
 	"content":"xxx"			//消息内容
 }
 {
