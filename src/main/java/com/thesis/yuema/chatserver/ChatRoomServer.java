@@ -46,7 +46,7 @@ public class ChatRoomServer {
 	private static boolean flag = true;
 	private Charset charset = Charset.forName("UTF-8");
 	// 用来记录在线人数，以及昵称
-	private static Map<String,SocketChannel> onlineMap = Collections.synchronizedMap(new HashMap<String, SocketChannel>());
+	private static Map<Integer,SocketChannel> onlineMap = Collections.synchronizedMap(new HashMap<Integer, SocketChannel>());
 	
 	private ExecutorService service = null;
 	
@@ -131,11 +131,11 @@ public class ChatRoomServer {
 							content.append(charset.decode(buff));
 
 						}
-						System.out.println("Server is listening from client "
-								+ sc.getRemoteAddress() + " data rev is: " + content.toString());
+						
 						// 将此对应的channel设置为准备下一次接受数据
 						sk.interestOps(SelectionKey.OP_READ);
 					} catch (IOException io) {
+						deleteSocketChannel((SocketChannel)sk.channel());
 						sk.cancel();
 						if (sk.channel() != null) {
 							try {
@@ -146,17 +146,20 @@ public class ChatRoomServer {
 						}
 					}
 					if (content.length() > 0) {
+						System.out.println("Server is listening from client "
+								+ sc.getRemoteAddress() + " data rev is: " + content.toString() + "data length: " + content.length());
 						Map<String,Object> map = JsonUtil.toObject(content.toString(), Map.class);
+						System.out.println("onlineMap size: "+ onlineMap.size());
 						if (map.get("type").equals("register")){
 							synchronized(onlineMap){
-								String username = (String)map.get("username");
-								if (onlineMap.containsKey(username)){
-									if (onlineMap.get(username) != sc){
-										onlineMap.put(username, sc);
+								int userId = (Integer)map.get("userId");
+								if (onlineMap.containsKey(userId)){
+									if (onlineMap.get(userId) != sc){
+										onlineMap.put(userId, sc);
 									}
 								}
 								else{
-									onlineMap.put(username, sc);
+									onlineMap.put(userId, sc);
 								}
 							}
 						}
@@ -178,20 +181,35 @@ public class ChatRoomServer {
 		PreparedStatement ps = null;
 		ResultSet set = null;
 		try {
-			String sql = "select u.username from chat_member c,user_info u where u.id=c.user_id and c.chat_id=?";
+			String sql = "select u.id from chat_member c,user_info u where u.id=c.user_id and c.chat_id=?";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, (Integer)map.get("chatId"));
 			set = ps.executeQuery();
-			String username = (String)map.get("username");
+			int userId = (Integer)map.get("userId");
+			SocketChannel sc = null;
 			while(set.next()){
-				String user = set.getString(1);
-				if (!user.equals(username)){
+				int user = set.getInt(1);
+				if (user != userId){
 					synchronized(onlineMap){
 						if (onlineMap.containsKey(user)){
-							onlineMap.get(user).write(charset.encode(JsonUtil.toJson(map)));
+							sc = onlineMap.get(user);
+							try{
+								sc.write(charset.encode(JsonUtil.toJson(map)));
+							}catch (Exception e) {
+								saveChatHistory(user,map);
+								deleteSocketChannel(sc);
+								sc.keyFor(selector).cancel();
+								if (sc.keyFor(selector).channel() != null) {
+									try {
+										sc.close();
+									} catch (IOException e1) {
+										e1.printStackTrace();
+									}
+								}
+							}
 						}
 						else{
-							JPushUtil.pushCustomMessageToOne(user, map);
+							saveChatHistory(user,map);
 						}
 					}
 				}
@@ -206,25 +224,51 @@ public class ChatRoomServer {
 				e.printStackTrace();
 			}
 		}
-////		List<String> users = chatServiceImpl.getUsernamesByChatId((Integer)map.get("chatId"));
-//		List<String> users = new ArrayList<String>();
-//		users.add("18825152222");
-//		users.add("18825156526");
-//		String username = (String)map.get("username");
-//		if (users != null && users.size() > 1){
-//			for (String user : users){
-//				if (!user.equals(username)){
-//					synchronized(onlineMap){
-//						if (onlineMap.containsKey(user)){
-//							onlineMap.get(user).write(charset.encode(JsonUtil.toJson(map)));
-//						}
-//						else{
-//							JPushUtil.pushCustomMessageToOne(user, map);
-//						}
-//					}
-//				}
-//			}
-//		}
+	}
+	
+	private void saveChatHistory(int user, Map<String, Object> map){
+		PreparedStatement ps = null;
+		String sql = "insert into chat_history(chat_id,user_id,content,chat_time,chat_user_id) values(?,?,?,?,?)";
+		try {
+			conn.setAutoCommit(false);
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, (Integer)map.get("chatId"));
+			ps.setInt(2, user);
+			ps.setString(3, (String)map.get("content"));
+			ps.setString(4, (String)map.get("time"));
+			ps.setInt(5, (Integer)map.get("userId"));
+			ps.execute();
+			conn.commit();
+		} catch (Exception e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}finally{
+			try {
+				conn.setAutoCommit(true);
+				ps.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	@SuppressWarnings("rawtypes")
+	private void deleteSocketChannel(SocketChannel sc){
+		synchronized(onlineMap){
+			Iterator iter = onlineMap.entrySet().iterator();
+			while (iter.hasNext()) {
+				Map.Entry entry = (Map.Entry) iter.next();
+				if (sc == entry.getValue()){
+					onlineMap.remove(entry.getKey());
+					System.out.println("user is remove");
+					break;
+				}
+			}
+		}
 	}
 	
 	public void deleteChatMsg(List<String> users, Map<String,Object> map) throws IOException{
@@ -326,14 +370,14 @@ public class ChatRoomServer {
 				Map<String,Object> map = JsonUtil.toObject(content.toString(), Map.class);
 				if (map.get("type").equals("register")){
 					synchronized(onlineMap){
-						String username = (String)map.get("username");
-						if (onlineMap.containsKey(username)){
-							if (onlineMap.get(username) != sc){
-								onlineMap.put(username, sc);
+						int userId = (Integer)map.get("userId");
+						if (onlineMap.containsKey(userId)){
+							if (onlineMap.get(userId) != sc){
+								onlineMap.put(userId, sc);
 							}
 						}
 						else{
-							onlineMap.put(username, sc);
+							onlineMap.put(userId, sc);
 						}
 					}
 				}

@@ -306,4 +306,14 @@ public class ChatServiceImpl implements ChatService {
 		JPushUtil.pushInviteSuccessToUser(username, map);
 	}
 
+	@Override
+	public boolean deleteChatHistories(int userId) {
+		return chatHistoryDao.deleteChatHistoriesByUserId(userId);
+	}
+
+	@Override
+	public List<Map<String, Object>> getChatHistoriesByUserId(int userId) {
+		return chatHistoryDao.getChatHistoriesByUserId(userId);
+	}
+
 }

@@ -20,7 +20,8 @@ public class ChatHistory implements java.io.Serializable {
 	// Fields
 
 	private Integer id;
-	private UserInfo userInfo;
+	private UserInfo userInfoByUserId;
+	private UserInfo userInfoByChatUserId;
 	private ChatInfo chatInfo;
 	private String content;
 	private String chatTime;
@@ -32,9 +33,11 @@ public class ChatHistory implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public ChatHistory(UserInfo userInfo, ChatInfo chatInfo, String content,
+	public ChatHistory(UserInfo userInfoByUserId,
+			UserInfo userInfoByChatUserId, ChatInfo chatInfo, String content,
 			String chatTime) {
-		this.userInfo = userInfo;
+		this.userInfoByUserId = userInfoByUserId;
+		this.userInfoByChatUserId = userInfoByChatUserId;
 		this.chatInfo = chatInfo;
 		this.content = content;
 		this.chatTime = chatTime;
@@ -55,12 +58,22 @@ public class ChatHistory implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
-	public UserInfo getUserInfo() {
-		return this.userInfo;
+	public UserInfo getUserInfoByUserId() {
+		return this.userInfoByUserId;
 	}
 
-	public void setUserInfo(UserInfo userInfo) {
-		this.userInfo = userInfo;
+	public void setUserInfoByUserId(UserInfo userInfoByUserId) {
+		this.userInfoByUserId = userInfoByUserId;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "chat_user_id", nullable = false)
+	public UserInfo getUserInfoByChatUserId() {
+		return this.userInfoByChatUserId;
+	}
+
+	public void setUserInfoByChatUserId(UserInfo userInfoByChatUserId) {
+		this.userInfoByChatUserId = userInfoByChatUserId;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -73,7 +86,7 @@ public class ChatHistory implements java.io.Serializable {
 		this.chatInfo = chatInfo;
 	}
 
-	@Column(name = "content", nullable = false, length = 65535)
+	@Column(name = "content", nullable = false, length = 5000)
 	public String getContent() {
 		return this.content;
 	}
@@ -82,7 +95,7 @@ public class ChatHistory implements java.io.Serializable {
 		this.content = content;
 	}
 
-	@Column(name = "chat_time", nullable = false, length = 12)
+	@Column(name = "chat_time", nullable = false, length = 50)
 	public String getChatTime() {
 		return this.chatTime;
 	}

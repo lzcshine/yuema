@@ -38,10 +38,13 @@ public class UserInfo implements java.io.Serializable {
 	private Set<FeedbackInfo> feedbackInfos = new HashSet<FeedbackInfo>(0);
 	private Set<ImeiInfo> imeiInfos = new HashSet<ImeiInfo>(0);
 	private Set<ChatInfo> chatInfos = new HashSet<ChatInfo>(0);
-	private Set<ChatHistory> chatHistories = new HashSet<ChatHistory>(0);
 	private Set<FocusRelation> focusRelationsForFocusId = new HashSet<FocusRelation>(
 			0);
+	private Set<ChatHistory> chatHistoriesForUserId = new HashSet<ChatHistory>(
+			0);
 	private Set<ChatMember> chatMembers = new HashSet<ChatMember>(0);
+	private Set<ChatHistory> chatHistoriesForChatUserId = new HashSet<ChatHistory>(
+			0);
 
 	// Constructors
 
@@ -65,9 +68,11 @@ public class UserInfo implements java.io.Serializable {
 			String introduce, String photo, Short isFrost, String createTime,
 			Set<FocusRelation> focusRelationsForMyId,
 			Set<FeedbackInfo> feedbackInfos, Set<ImeiInfo> imeiInfos,
-			Set<ChatInfo> chatInfos, Set<ChatHistory> chatHistories,
+			Set<ChatInfo> chatInfos,
 			Set<FocusRelation> focusRelationsForFocusId,
-			Set<ChatMember> chatMembers) {
+			Set<ChatHistory> chatHistoriesForUserId,
+			Set<ChatMember> chatMembers,
+			Set<ChatHistory> chatHistoriesForChatUserId) {
 		this.username = username;
 		this.password = password;
 		this.nickname = nickname;
@@ -83,9 +88,10 @@ public class UserInfo implements java.io.Serializable {
 		this.feedbackInfos = feedbackInfos;
 		this.imeiInfos = imeiInfos;
 		this.chatInfos = chatInfos;
-		this.chatHistories = chatHistories;
 		this.focusRelationsForFocusId = focusRelationsForFocusId;
+		this.chatHistoriesForUserId = chatHistoriesForUserId;
 		this.chatMembers = chatMembers;
+		this.chatHistoriesForChatUserId = chatHistoriesForChatUserId;
 	}
 
 	// Property accessors
@@ -237,15 +243,6 @@ public class UserInfo implements java.io.Serializable {
 		this.chatInfos = chatInfos;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userInfo")
-	public Set<ChatHistory> getChatHistories() {
-		return this.chatHistories;
-	}
-
-	public void setChatHistories(Set<ChatHistory> chatHistories) {
-		this.chatHistories = chatHistories;
-	}
-
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userInfoByFocusId")
 	public Set<FocusRelation> getFocusRelationsForFocusId() {
 		return this.focusRelationsForFocusId;
@@ -256,6 +253,16 @@ public class UserInfo implements java.io.Serializable {
 		this.focusRelationsForFocusId = focusRelationsForFocusId;
 	}
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userInfoByUserId")
+	public Set<ChatHistory> getChatHistoriesForUserId() {
+		return this.chatHistoriesForUserId;
+	}
+
+	public void setChatHistoriesForUserId(
+			Set<ChatHistory> chatHistoriesForUserId) {
+		this.chatHistoriesForUserId = chatHistoriesForUserId;
+	}
+
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userInfo")
 	public Set<ChatMember> getChatMembers() {
 		return this.chatMembers;
@@ -263,6 +270,16 @@ public class UserInfo implements java.io.Serializable {
 
 	public void setChatMembers(Set<ChatMember> chatMembers) {
 		this.chatMembers = chatMembers;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userInfoByChatUserId")
+	public Set<ChatHistory> getChatHistoriesForChatUserId() {
+		return this.chatHistoriesForChatUserId;
+	}
+
+	public void setChatHistoriesForChatUserId(
+			Set<ChatHistory> chatHistoriesForChatUserId) {
+		this.chatHistoriesForChatUserId = chatHistoriesForChatUserId;
 	}
 
 }

@@ -15,4 +15,8 @@ public interface ChatHistoryDao {
 	boolean addChatHistory(ChatHistory bean);
 	
 	List<Map<String,Object>> getChatHistories(int chatId);
+	
+	List<Map<String,Object>> getChatHistoriesByUserId(int userId);
+	
+	boolean deleteChatHistoriesByUserId(int userId);
 }

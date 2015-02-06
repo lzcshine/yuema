@@ -77,8 +77,13 @@ public class ChatController {
 	}
 	
 	@RequestMapping(value="getChatHistories")
-	public void getChatHistoriesByChatId(HttpServletResponse response, int chatId){
-		ResponseUtil.sendBack(response, JsonUtil.toJson(chatServiceImpl.getChatHistoriesByChatId(chatId)));
+	public void getChatHistoriesByChatId(HttpServletResponse response, int userId){
+		ResponseUtil.sendBack(response, JsonUtil.toJson(chatServiceImpl.getChatHistoriesByUserId(userId)));
+	}
+	
+	@RequestMapping(value="deleteChatHistories")
+	public void deleteChatHistories(HttpServletResponse response, int userId){
+		ResponseUtil.sendBack(response, JsonUtil.toJson(chatServiceImpl.deleteChatHistories(userId)));
 	}
 	
 	@RequestMapping(value="deleteChatMsg")

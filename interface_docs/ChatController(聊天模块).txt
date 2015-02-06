@@ -39,8 +39,7 @@ path：http://localhost/addChatMember
 5.获取聊天记录：
 getChatHistories(/getChatHistories)
 path：http://localhost/getChatHistories
-入参：chatId,		//聊天室id
-	count		//获取条数，不传情况默认获取10条
+入参：username, 	//用户名
 返回：待添加
 
 6.群主删除聊天室：
@@ -55,4 +54,10 @@ path：http://localhost/deleteUserChannel
 入参：chatId,		//聊天室id
 	username, 	//用户名
 	nickname	//用户昵称
+返回：true或false
+
+7.删除聊天记录：
+deleteChatHistories(/deleteChatHistories)
+path：http://localhost/deleteChatHistories
+入参：username, 	//用户名
 返回：true或false

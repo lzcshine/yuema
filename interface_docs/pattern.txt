@@ -5,7 +5,7 @@
 {
 	"type":"message",		//消息类型（message）
 	"chatId":1,				//聊天室id
-	"username":"xxx",		//用户名
+	"userId":xxx,			//用户id
 	"nickname":"xxx",		//用户昵称
 	"photo":"xxx",			//用户头像
 	"time":xxx,				//发送时间
@@ -14,12 +14,12 @@
 #socket客户端传递的json消息格式#
 {
 	"type":"register",		//消息类型（register）,用户初始化新创建的聊天室连接
-	"username":"xxx",		//用户名 
+	"userId":xxx			//用户id
 }
 {
 	"type":"message",		//消息类型（message），用户发送聊天信息
 	"chatId":1,				//聊天室id
-	"username":"xxx",		//用户名
+	"userId":xxx,			//用户id
 	"nickname":"xxx",		//用户昵称
 	"photo":"xxx",			//用户头像
 	"time":xxx,				//发送时间

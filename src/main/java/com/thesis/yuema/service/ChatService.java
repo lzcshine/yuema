@@ -97,4 +97,14 @@ public interface ChatService {
 	 * 处理有人回应的消息
 	 */
 	boolean handleChatCreateSuccess(int chatId, String username, String nickname);
+	
+	/**
+	 * 删除聊天记录
+	 */
+	boolean deleteChatHistories(int userId);
+	
+	/**
+	 * 获取聊天记录
+	 */
+	List<Map<String,Object>> getChatHistoriesByUserId(int userId);
 }

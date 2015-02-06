@@ -27,8 +27,8 @@ public class ChatHistoryDaoImpl extends BaseDaoImpl<ChatHistory> implements
 	public List<Map<String, Object>> getChatHistories(int chatId) {
 		StringBuilder hql = new StringBuilder();
 		hql.append(" select new map( ");
-		hql.append(" ch.userInfo.nickname as nickname, ");
-		hql.append(" ch.userInfo.photo as photo, ");
+		hql.append(" ch.userInfoByChatUser.nickname as nickname, ");
+		hql.append(" ch.userInfoByChatUser.photo as photo, ");
 		hql.append(" ch.content as content, ");
 		hql.append(" ch.chatTime as chatTime ");
 		hql.append(") from ChatHistory ch where ch.chatInfo.id=? order by ch.chatTime");
@@ -38,6 +38,39 @@ public class ChatHistoryDaoImpl extends BaseDaoImpl<ChatHistory> implements
 		} catch (Exception e) {
 		}
 		return list;	
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Map<String, Object>> getChatHistoriesByUserId(int userId) {
+		StringBuilder hql = new StringBuilder();
+		hql.append(" select new map( ");
+		hql.append(" ch.userInfoByChatUserId.nickname as nickname, ");
+		hql.append(" ch.userInfoByChatUserId.photo as photo, ");
+		hql.append(" ch.content as content, ");
+		hql.append(" ch.chatInfo.id as chatId, ");
+		hql.append(" ch.chatTime as chatTime ");
+		hql.append(") from ChatHistory ch where ch.userInfoByUserId.id=?");
+		List<Map<String,Object>> list = null;
+		try {
+			list = this.getSession().createQuery(hql.toString()).setParameter(0, userId).list();
+		} catch (Exception e) {
+		}
+		return list;
+	}
+
+	@SuppressWarnings({ "unchecked" })
+	@Override
+	public boolean deleteChatHistoriesByUserId(int userId) {
+		List<ChatHistory> list = this
+				.getSession()
+				.createQuery(
+						"from ChatHistory ch where ch.userInfoByUserId.id=?")
+				.setParameter(0, userId).list();
+		if (list != null && list.size() > 0){
+			return this.batchDelete(list);
+		}
+		return false;
 	}
 
 }
